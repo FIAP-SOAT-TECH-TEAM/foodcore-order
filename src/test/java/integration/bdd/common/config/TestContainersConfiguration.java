@@ -21,15 +21,12 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 /**
  * Configuração base para testes de integração que utilizam múltiplos serviços
- * emulados via Testcontainers, incluindo PostgreSQL, SQL Server, Azure Service
- * Bus Emulator, LocalStack (Cognito) e MailDev.
+ * emulados via Testcontainers.
  *
  * <p>
  * Esta classe centraliza todos os contêineres necessários para testes de
  * integração, fornecendo um ambiente completamente isolado, estável e
- * reproduzível. Cada serviço é executado em contêiner próprio e configurado
- * para atender aos cenários de testes que dependem de banco de dados
- * relacional, mensageria, autenticação Cognito e envio/inspeção de e-mails.
+ * reproduzível.
  * </p>
  *
  * <p>
@@ -48,24 +45,11 @@ import io.github.cdimascio.dotenv.Dotenv;
  * </ul>
  *
  * <p>
- * <b>Funcionamento geral:</b>
- * </p>
- * <ul>
- * <li>Os contêineres são inicializados em rede compartilhada para permitir
- * comunicação interna.</li>
- * <li>O UserPool do Cognito é criado automaticamente via
- * {@link LocalStackFixture}.</li>
- * <li>Portas expostas (como MailDev) são mapeadas para uso nos testes.</li>
- * <li>O Service Bus Emulator é configurado para usar SQL Server como store de
- * persistência, conforme exigido pela própria ferramenta.</li>
- * </ul>
- *
- * <p>
  * <b>Recursos relacionados:</b>
  * </p>
  * <ul>
- * <li><a href="https://testcontainers.com/">Testcontainers
- * Documentation</a></li>
+ * <li><a href="https://testcontainers.com/modules/postgresql/">Testcontainers
+ * PostgreSQL</a></li>
  * <li><a href="https://github.com/Azure/azure-service-bus-emulator">Azure
  * Service Bus Emulator - GitHub</a></li>
  * <li><a href="https://docs.localstack.cloud/">LocalStack

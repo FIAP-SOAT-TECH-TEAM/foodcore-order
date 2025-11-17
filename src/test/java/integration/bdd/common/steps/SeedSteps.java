@@ -27,13 +27,18 @@ public class SeedSteps extends CucumberSpringConfiguration {
 	@Autowired
 	private DataSource dataSource;
 
-	@Dado("que existem pedidos")
-	public void queExistemPedidos() throws Exception {
-		log.debug("Inserindo pedidos no banco de dados");
+	/**
+	 * Cria estrutura de tabelas e insere produtos utilizando Liquibase.
+	 *
+	 * @throws Exception
+	 *             se ocorrer algum erro na migração.
+	 */
+	@Dado("que existam pedidos")
+	public void queExistamPedidos() throws Exception {
+		log.debug("Inicializando banco de dados (DDL e DML)");
 
 		var connection = DataSourceUtils.getConnection(dataSource);
 		var database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
-
 		var liquibase = new Liquibase("db/changelog/db.changelog-master.yaml", new ClassLoaderResourceAccessor(),
 				database);
 

@@ -5,7 +5,7 @@ Funcionalidade: Notificar usuário quando o pedido estiver pronto para retirada
   Para que eu possa retirá-lo
 
   Contexto:
-    Dado que existem pedidos
+    Dado que existam pedidos
 
   Cenario: Notificar cliente com sucesso quando o pedido estiver pronto
     Dado que o email do cliente do pedido é "joaozin@email.com" e o nome é "João Lucas"

@@ -107,7 +107,6 @@ dependencies {
 	testImplementation("org.testcontainers:testcontainers-localstack")
 	testImplementation("com.microsoft.sqlserver:mssql-jdbc:${mssqlVersion}")
 	testImplementation("io.github.cdimascio:dotenv-java:${dotEnvVersion}")
-
 	testImplementation "io.rest-assured:rest-assured"
 
 	// A Task generateOpenApiDocs é executada com Profile de teste, e precisa que a aplicação esteja em execução.
