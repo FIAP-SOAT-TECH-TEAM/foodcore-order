@@ -7,15 +7,18 @@ import com.soat.fiap.food.core.order.core.interfaceadapters.dto.product.ProductD
 import com.soat.fiap.food.core.order.core.interfaceadapters.dto.product.StockDTO;
 
 /**
- * Fixture para criação de catálogos de produtos simulados para testes
- * unitários.
+ * Fixture utilitária para criação de catálogos e produtos simulados utilizados
+ * em testes unitários da camada de pedidos.
+ * <p>
+ * Fornece métodos estáticos que geram produtos válidos, múltiplos produtos e
+ * instâncias customizadas para cenários específicos.
  */
 public class CatalogFixture {
 
 	/**
 	 * Cria um catálogo contendo um único produto ativo e com categoria ativa.
 	 *
-	 * @return Lista com um único {@link ProductDTO} válido.
+	 * @return lista com um único {@link ProductDTO} válido
 	 */
 	public static List<ProductDTO> createCatalogWithProducts() {
 		return List.of(new ProductDTO(1L, "Hambúrguer", BigDecimal.valueOf(25.00), true, true, new StockDTO(10)));
@@ -24,7 +27,7 @@ public class CatalogFixture {
 	/**
 	 * Cria um catálogo contendo múltiplos produtos ativos com estoque suficiente.
 	 *
-	 * @return Lista com múltiplos {@link ProductDTO} válidos.
+	 * @return lista com múltiplos {@link ProductDTO} válidos
 	 */
 	public static List<ProductDTO> createCatalogWithMultipleProducts() {
 		return List.of(new ProductDTO(1L, "Hambúrguer", BigDecimal.valueOf(25.00), true, true, new StockDTO(10)),
@@ -32,24 +35,24 @@ public class CatalogFixture {
 	}
 
 	/**
-	 * Cria um produto customizado para cenários de teste específicos. Permite
-	 * controlar todos os atributos relevantes, como nome, preço, estoque e flags de
-	 * ativação.
+	 * Cria um produto de catálogo totalmente customizado para cenários de teste.
+	 * <p>
+	 * Permite controlar todos os atributos do produto: ID, nome, preço, flags de
+	 * ativação e quantidade de estoque.
 	 *
 	 * @param id
-	 *            Identificador único do produto.
+	 *            identificador único do produto
 	 * @param name
-	 *            Nome do produto.
+	 *            nome do produto
 	 * @param price
-	 *            Preço do produto em {@link BigDecimal}.
+	 *            preço do produto
 	 * @param active
-	 *            Indica se o produto está ativo no catálogo.
+	 *            define se o produto está ativo
 	 * @param categoryActive
-	 *            Indica se a categoria do produto está ativa.
+	 *            define se a categoria do produto está ativa
 	 * @param stockQty
-	 *            Quantidade disponível em estoque.
-	 *
-	 * @return Instância configurada de {@link ProductDTO}.
+	 *            quantidade disponível de estoque
+	 * @return instância configurada de {@link ProductDTO}
 	 */
 	public static ProductDTO createCatalogProduct(Long id, String name, BigDecimal price, boolean active,
 			boolean categoryActive, int stockQty) {

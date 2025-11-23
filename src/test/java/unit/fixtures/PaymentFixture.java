@@ -4,28 +4,35 @@ import com.soat.fiap.food.core.order.core.interfaceadapters.dto.payment.PaymentS
 import com.soat.fiap.food.core.order.core.interfaceadapters.dto.payment.StatusDTO;
 
 /**
- * Fixture para criação de objetos relacionados a pagamentos simulados
- * utilizados em testes unitários.
+ * Fixture utilitária para criação de objetos relacionados a pagamentos
+ * utilizados em testes unitários do módulo de pedidos.
+ * <p>
+ * Fornece métodos para gerar diferentes estados de pagamento de forma simples e
+ * padronizada, facilitando a construção de cenários de teste.
  */
 public class PaymentFixture {
 
 	/**
-	 * Cria um pagamento válido com status aprovado.
+	 * Cria um status de pagamento marcado como aprovado.
 	 *
 	 * @param orderId
 	 *            ID do pedido associado ao pagamento
-	 * @return {@link PaymentStatusDTO} com status {@link StatusDTO#APPROVED}
+	 * @return instância de {@link PaymentStatusDTO} com status
+	 *         {@link StatusDTO#APPROVED}
 	 */
 	public static PaymentStatusDTO createApprovedPaymentStatus(Long orderId) {
 		return new PaymentStatusDTO(orderId, StatusDTO.APPROVED);
 	}
 
 	/**
-	 * Cria um pagamento com status pendente (ainda não aprovado).
+	 * Cria um status de pagamento pendente.
+	 * <p>
+	 * Utilizado para simular pagamentos ainda não confirmados ou autorizados.
 	 *
 	 * @param orderId
 	 *            ID do pedido associado ao pagamento
-	 * @return {@link PaymentStatusDTO} com status {@link StatusDTO#PENDING}
+	 * @return instância de {@link PaymentStatusDTO} com status
+	 *         {@link StatusDTO#PENDING}
 	 */
 	public static PaymentStatusDTO createPendingPaymentStatus(Long orderId) {
 		return new PaymentStatusDTO(orderId, StatusDTO.PENDING);

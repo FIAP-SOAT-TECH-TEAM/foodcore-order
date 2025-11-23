@@ -9,22 +9,27 @@ import com.soat.fiap.food.core.order.core.domain.events.*;
 import com.soat.fiap.food.core.order.core.interfaceadapters.dto.events.*;
 
 /**
- * Fixture para criação de eventos do módulo Order para testes unitários.
+ * Fixture utilitária para criação de eventos relacionados ao módulo Order,
+ * utilizada exclusivamente em testes unitários.
+ * <p>
+ * Fornece métodos estáticos para gerar eventos do domínio e seus
+ * correspondentes DTOs, permitindo cenários de teste ricos e controlados.
  */
 public class EventFixture {
 
 	/**
-	 * Cria um {@link OrderCreatedEventDto} com um único item.
+	 * Cria um {@link OrderCreatedEventDto} contendo um único item configurado
+	 * automaticamente.
 	 *
 	 * @param orderId
 	 *            ID do pedido
 	 * @param orderNumber
-	 *            Número do pedido
+	 *            número do pedido
 	 * @param userId
-	 *            ID do usuário
+	 *            ID do usuário criador
 	 * @param totalAmount
-	 *            Valor total do pedido
-	 * @return instância de OrderCreatedEventDto
+	 *            valor total do pedido
+	 * @return instância populada de {@link OrderCreatedEventDto}
 	 */
 	public static OrderCreatedEventDto createOrderCreatedEventDto(Long orderId, String orderNumber, String userId,
 			BigDecimal totalAmount) {
@@ -44,19 +49,21 @@ public class EventFixture {
 		event.setUserId(userId);
 		event.setTotalAmount(totalAmount);
 		event.setItems(List.of(item));
+
 		return event;
 	}
 
 	/**
-	 * Cria um {@link OrderCanceledEventDto} com múltiplos itens.
+	 * Cria um {@link OrderCanceledEventDto} contendo múltiplos itens cancelados.
 	 *
 	 * @param orderId
 	 *            ID do pedido
 	 * @param totalAmount
-	 *            Valor total do pedido
-	 * @return instância de OrderCanceledEventDto
+	 *            valor total do pedido
+	 * @return instância populada de {@link OrderCanceledEventDto}
 	 */
 	public static OrderCanceledEventDto createOrderCanceledEventDto(Long orderId, BigDecimal totalAmount) {
+
 		OrderItemCanceledEventDto item1 = new OrderItemCanceledEventDto();
 		item1.setId(1L);
 		item1.setProductId(101L);
@@ -78,6 +85,7 @@ public class EventFixture {
 		OrderCanceledEventDto event = new OrderCanceledEventDto();
 		event.setId(orderId);
 		event.setItems(List.of(item1, item2));
+
 		return event;
 	}
 
@@ -92,7 +100,7 @@ public class EventFixture {
 	 *            valor total do pedido
 	 * @param readyAt
 	 *            data/hora em que o pedido ficou pronto
-	 * @return instância de OrderReadyEventDto
+	 * @return instância populada de {@link OrderReadyEventDto}
 	 */
 	public static OrderReadyEventDto createOrderReadyEventDto(String clientId, String orderNumber, BigDecimal amount,
 			String readyAt) {
@@ -101,28 +109,26 @@ public class EventFixture {
 		event.setOrderNumber(orderNumber);
 		event.setAmount(amount);
 		event.setReadyAt(readyAt);
+
 		return event;
 	}
 
 	/**
-	 * Cria um {@link PaymentApprovedEventDto} representando um pagamento aprovado.
-	 *
+	 * Cria um {@link PaymentApprovedEventDto} simulando um pagamento aprovado.
 	 * <p>
-	 * Este evento é utilizado para simular o retorno de uma transação de pagamento
-	 * bem-sucedida, associada a um pedido existente.
-	 * </p>
+	 * Útil para testes de confirmação de pagamento ou atualização de status.
 	 *
 	 * @param paymentId
 	 *            identificador único do pagamento
 	 * @param orderId
-	 *            identificador do pedido associado
+	 *            identificador do pedido
 	 * @param amount
-	 *            valor total aprovado
+	 *            valor aprovado
 	 * @param paymentMethod
-	 *            método de pagamento utilizado (ex: "CREDIT_CARD")
+	 *            método utilizado (ex.: "CREDIT_CARD")
 	 * @param approvedAt
-	 *            data e hora da aprovação
-	 * @return instância de PaymentApprovedEventDto
+	 *            data/hora da aprovação
+	 * @return instância de {@link PaymentApprovedEventDto}
 	 */
 	public static PaymentApprovedEventDto createPaymentApprovedEventDto(UUID paymentId, Long orderId, BigDecimal amount,
 			String paymentMethod, LocalDateTime approvedAt) {
@@ -132,21 +138,22 @@ public class EventFixture {
 		event.amount = amount;
 		event.paymentMethod = paymentMethod;
 		event.approvedAt = approvedAt;
+
 		return event;
 	}
 
 	/**
-	 * Cria um {@link OrderCreatedEvent} com um único item.
+	 * Cria um {@link OrderCreatedEvent} do domínio contendo um único item.
 	 *
 	 * @param orderId
 	 *            ID do pedido
 	 * @param orderNumber
-	 *            Número do pedido
+	 *            número do pedido
 	 * @param userId
-	 *            ID do usuário
+	 *            ID do usuário criador
 	 * @param totalAmount
-	 *            Valor total do pedido
-	 * @return instância de OrderCreatedEvent
+	 *            valor total do pedido
+	 * @return instância populada de {@link OrderCreatedEvent}
 	 */
 	public static OrderCreatedEvent createOrderCreatedEvent(Long orderId, String orderNumber, String userId,
 			BigDecimal totalAmount) {
@@ -171,15 +178,16 @@ public class EventFixture {
 	}
 
 	/**
-	 * Cria um {@link OrderCanceledEvent} com múltiplos itens.
+	 * Cria um {@link OrderCanceledEvent} do domínio contendo múltiplos itens.
 	 *
 	 * @param orderId
 	 *            ID do pedido
 	 * @param totalAmount
-	 *            Valor total do pedido
-	 * @return instância de OrderCanceledEvent
+	 *            valor total do pedido
+	 * @return instância populada de {@link OrderCanceledEvent}
 	 */
 	public static OrderCanceledEvent createOrderCanceledEvent(Long orderId, BigDecimal totalAmount) {
+
 		OrderItemCanceledEvent item1 = new OrderItemCanceledEvent();
 		item1.setId(1L);
 		item1.setProductId(101L);
@@ -206,7 +214,7 @@ public class EventFixture {
 	}
 
 	/**
-	 * Cria um {@link OrderReadyEvent} representando um pedido pronto.
+	 * Cria um {@link OrderReadyEvent} representando um pedido pronto no domínio.
 	 *
 	 * @param clientId
 	 *            ID do cliente
@@ -214,7 +222,7 @@ public class EventFixture {
 	 *            número do pedido
 	 * @param amount
 	 *            valor total do pedido
-	 * @return instância de OrderReadyEvent
+	 * @return instância de {@link OrderReadyEvent}
 	 */
 	public static OrderReadyEvent createOrderReadyEvent(String clientId, String orderNumber, BigDecimal amount) {
 		OrderReadyEvent event = new OrderReadyEvent();
