@@ -82,7 +82,7 @@ dependencies {
 	implementation 'org.liquibase:liquibase-core'
 
 	// PostgreSQL driver
-	runtimeOnly 'org.postgresql:postgresql'
+	implementation 'org.postgresql:postgresql'
 
 	// Lombok e MapStruct
 	compileOnly 'org.projectlombok:lombok'
