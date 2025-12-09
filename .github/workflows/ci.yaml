@@ -12,7 +12,7 @@ permissions:
   actions: read
 
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
   TF_VAR_subscription_id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
   TF_VAR_foodcore-backend-resource-group: ${{secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME}}
   TF_VAR_foodcore-backend-storage-account: ${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}
@@ -69,6 +69,9 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    env:
+      FOODCORE_SHARED_REPO_USERNAME: ${{ secrets.FOODCORE_SHARED_REPO_USERNAME }}
+      FOODCORE_SHARED_REPO_TOKEN: ${{ secrets.FOODCORE_SHARED_REPO_TOKEN }}
     # needs: infra-info
     steps:
       - uses: actions/checkout@v3

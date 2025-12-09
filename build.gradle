@@ -34,8 +34,8 @@ repositories {
 		name = "GitHubPackages"
 		url = uri("https://maven.pkg.github.com/FIAP-SOAT-TECH-TEAM/foodcore-shared")
 		credentials {
-			username = System.getenv("GITHUB_USERNAME") ?: env.GITHUB_USERNAME.value
-			password = System.getenv("GITHUB_TOKEN") ?: env.GITHUB_TOKEN.value
+			username = System.getenv("FOODCORE_SHARED_REPO_USERNAME") ?: env.FOODCORE_SHARED_REPO_USERNAME.value
+			password = System.getenv("FOODCORE_SHARED_REPO_TOKEN") ?: env.FOODCORE_SHARED_REPO_TOKEN.value
 		}
 	}
 }
