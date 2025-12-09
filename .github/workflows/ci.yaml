@@ -20,16 +20,12 @@ env:
   TF_VAR_foodcore-backend-infra-key: ${{secrets.FOODCORE_INFRA_BACKEND_AZURE_KEY}}
   TF_VAR_foodcore-backend-db-key: ${{secrets.FOODCORE_DB_BACKEND_AZURE_KEY}}
   TF_VAR_foodcore-backend-auth-key: ${{secrets.FOODCORE_AUTH_BACKEND_AZURE_KEY}}
+
   TF_VAR_chart_name: "foodcoreapi"
   TF_VAR_chart_version: "0.1.${{ github.run_number }}"
   TF_VAR_docker_image_tag: "${{ github.run_number }}"
-  TF_VAR_jwt_secret: ${{ secrets.FOODCORE_API_JWT_SECRET }}
   TF_VAR_swagger_path: "../build/openapi/swagger.json"
-  TF_VAR_mercadopago_base_url: ${{ secrets.FOODCORE_API_MP_BASE_URL }}
-  TF_VAR_mercadopago_token: ${{ secrets.FOODCORE_API_MP_TOKEN }}
-  TF_VAR_mercadopago_user_id: ${{ secrets.FOODCORE_API_MP_USER_ID }}
-  TF_VAR_mercadopago_pos_id: ${{ secrets.FOODCORE_API_MP_POS_ID }}
-  TF_VAR_api_ingress_path: "/api"
+  TF_VAR_api_ingress_path: "/order"
 
 jobs:
   # infra-info:
@@ -115,8 +111,7 @@ jobs:
         run: ./gradlew jacocoTestReport
 
       - name: Build and analyze with SonarCloud
-        run: |
-          ./gradlew sonar -Dsonar.qualitygate.wait=true
+        run: ./gradlew sonar -Dsonar.qualitygate.wait=true
         env:
           SONAR_CLOUD_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN }}
           LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
