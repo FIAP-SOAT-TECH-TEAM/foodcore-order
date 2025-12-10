@@ -66,7 +66,6 @@ import io.github.cdimascio.dotenv.Dotenv;
 @Testcontainers
 public abstract class TestContainersConfiguration {
 
-	private static final Dotenv dotenv = Dotenv.load();
 	private static final Network network = Network.newNetwork();
 
 	protected static String cognitoUserPoolId;
@@ -104,7 +103,7 @@ public abstract class TestContainersConfiguration {
 			.withServices("cognito-idp")
 			.withEnv("LOCALSTACK_AUTH_TOKEN",
 					System.getenv("LOCALSTACK_AUTH_TOKEN") != null ? System.getenv("LOCALSTACK_AUTH_TOKEN")
-							: dotenv.get("LOCALSTACK_AUTH_TOKEN"))
+							: Dotenv.load().get("LOCALSTACK_AUTH_TOKEN"))
 			.withEnv("LOCALSTACK_EDGE_PORT", "4566")
 			.withEnv("LOCALSTACK_REGION", "us-east-1")
 			.withEnv("AWS_ACCESS_KEY_ID", "test")
