@@ -100,8 +100,11 @@ public abstract class TestContainersConfiguration {
 
 	@Container
 	protected static final LocalStackContainer localstackContainer = new LocalStackContainer(
-			"localstack/localstack-pro:latest").withServices("cognito-idp")
-			.withEnv("LOCALSTACK_AUTH_TOKEN", dotenv.get("LOCALSTACK_AUTH_TOKEN"))
+			"localstack/localstack-pro:latest")
+			.withServices("cognito-idp")
+			.withEnv("LOCALSTACK_AUTH_TOKEN",
+					System.getenv("LOCALSTACK_AUTH_TOKEN") != null ? System.getenv("LOCALSTACK_AUTH_TOKEN")
+							: dotenv.get("LOCALSTACK_AUTH_TOKEN"))
 			.withEnv("LOCALSTACK_EDGE_PORT", "4566")
 			.withEnv("LOCALSTACK_REGION", "us-east-1")
 			.withEnv("AWS_ACCESS_KEY_ID", "test")
