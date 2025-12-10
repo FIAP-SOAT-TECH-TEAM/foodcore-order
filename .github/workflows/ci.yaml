@@ -109,6 +109,8 @@ jobs:
 
       - name: Integration Test with Gradle (Cucumber + TestContainers)
         run: ./gradlew cucumber
+        env:
+          LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
 
       - name: Generate Jacoco Report
         run: ./gradlew jacocoTestReport
@@ -117,7 +119,6 @@ jobs:
         run: ./gradlew sonar -Dsonar.qualitygate.wait=true
         env:
           SONAR_CLOUD_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN }}
-          LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
 
       - name: Generate OpenApi File
         run: |
