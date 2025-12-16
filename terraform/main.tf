@@ -1,6 +1,7 @@
 module "helm" {
   source = "./modules/helm"
 
+  subscription_id                   = var.subscription_id
   foodcore-backend-container        = var.foodcore-backend-container
   foodcore-backend-infra-key        = var.foodcore-backend-infra-key
   foodcore-backend-resource-group   = var.foodcore-backend-resource-group
@@ -18,6 +19,7 @@ module "helm" {
 # module "apim" {
 #   source = "./modules/apim"
 
+#   subscription_id                   = var.subscription_id
 #   foodcore-backend-container        = var.foodcore-backend-container
 #   foodcore-backend-infra-key        = var.foodcore-backend-infra-key
 #   foodcore-backend-auth-key         = var.foodcore-backend-auth-key

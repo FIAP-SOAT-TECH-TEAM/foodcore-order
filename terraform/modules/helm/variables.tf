@@ -1,4 +1,8 @@
 # remote states
+  variable "subscription_id" {
+    type        = string
+    description = "Azure Subscription ID"
+  }
   variable "foodcore-backend-resource-group" {
     type        = string
     description = "Nome do resource group onde o backend está armazenado"
