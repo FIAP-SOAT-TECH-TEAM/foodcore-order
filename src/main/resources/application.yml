@@ -16,6 +16,16 @@ spring:
       maximum-pool-size: 10
       minimum-idle: 5
 
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+      client:
+        config:
+          default:
+            connectTimeout: 500
+            readTimeout: 2000
+
   # JPA / Hibernate
   jpa:
     hibernate:
@@ -60,6 +70,19 @@ spring:
       mail.smtp.auth: ${SPRING_MAIL_AUTH_ENABLED:}
       mail.smtp.starttls.enable: ${SPRING_MAIL_TLS_ENABLED:}
 
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        registerHealthIndicator: true
 
 aws:
   cognito:

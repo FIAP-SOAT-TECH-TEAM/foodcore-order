@@ -72,6 +72,7 @@ dependencies {
 	// Spring Cloud
 	implementation 'org.springframework.cloud:spring-cloud-starter-kubernetes-discoveryclient'
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
 
 	// Micrometer
 	implementation 'io.micrometer:micrometer-registry-prometheus'
