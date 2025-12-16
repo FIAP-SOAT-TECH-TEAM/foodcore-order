@@ -7,13 +7,3 @@ data "terraform_remote_state" "infra" {
     key                  = var.foodcore-backend-infra-key
   }
 }
-
-data "terraform_remote_state" "db" {
-  backend = "azurerm"
-  config = {
-    resource_group_name  = var.foodcore-backend-resource-group
-    storage_account_name = var.foodcore-backend-storage-account
-    container_name       = var.foodcore-backend-container
-    key                  = var.foodcore-backend-db-key
-  }
-}

@@ -1,0 +1,78 @@
+namespace:
+  api:
+    name: order
+
+ingress:
+  name: "order"
+  className: ""
+  enabled: true
+  annotations: {
+    "kubernetes.io/ingress.class": "azure/application-gateway",
+    "appgw.ingress.kubernetes.io/use-private-ip": "true",
+    "appgw.ingress.kubernetes.io/health-probe-path": "/actuator/health",
+    "appgw.ingress.kubernetes.io/health-probe-port": "9090"
+  }
+  hosts:
+    - host: "replaced"
+
+  tls: []
+
+api:
+  name: order
+
+  replicaCount: 1
+
+  image:
+    repository: "replaced"
+    tag: "replaced"
+
+  ports:
+    port: 9090
+    name: http
+
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: 900m
+      memory: 1024Mi
+
+  ingress:
+    path: "replaced"
+    pathType: Prefix
+
+  server:
+    address: 0.0.0.0
+    port: 9090
+    profilesActive: "prod"
+
+  hpa:
+    minReplicas: 1
+    maxReplicas: 3
+    cpu:
+      utilization:
+        averageUtilization: 70
+
+  spring:
+    mail:
+      auth:
+        enabled: true
+      tls:
+        enabled: true
+
+storageClass:
+  name: azure-disk
+  skuName: Standard_LRS
+  kind: Managed
+  cachingMode: ReadOnly
+  reclaimPolicy: Delete
+  volumeBindingMode: WaitForFirstConsumer
+  allowVolumeExpansion: true
+  fsType: ext4
+
+secrets:
+  azureKeyVault:
+    keyVaultName: "replaced"
+    tenantId: "replaced"
+    clientID: "replaced"
