@@ -72,7 +72,7 @@ jobs:
     env:
       FOODCORE_SHARED_REPO_USERNAME: ${{ secrets.FOODCORE_SHARED_REPO_USERNAME }}
       FOODCORE_SHARED_REPO_TOKEN: ${{ secrets.FOODCORE_SHARED_REPO_TOKEN }}
-    # needs: infra-info
+    needs: infra-info
     steps:
       - uses: actions/checkout@v3
         with:
