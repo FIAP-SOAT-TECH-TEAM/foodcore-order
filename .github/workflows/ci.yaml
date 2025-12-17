@@ -164,8 +164,11 @@ jobs:
       - name: Build and Push Docker Image
         run: |
           IMAGE_NAME=${{ needs.infra-info.outputs.acr_login_server }}/foodcore-order:${{ github.run_number }}
-          docker build -t $IMAGE_NAME -f docker/Dockerfile .
+          docker build  --secret type=env,id=gh_user,env=FOODCORE_SHARED_REPO_USERNAME --secret type=env,id=gh_token,env=FOODCORE_SHARED_REPO_TOKEN -t $IMAGE_NAME -f docker/Dockerfile .
           docker push $IMAGE_NAME
+        env:
+          FOODCORE_SHARED_REPO_USERNAME: ${{ secrets.FOODCORE_SHARED_REPO_USERNAME }}
+          FOODCORE_SHARED_REPO_TOKEN: ${{ secrets.FOODCORE_SHARED_REPO_TOKEN }}
 
       - name: Build and Push Package Helm Chart
         run: |

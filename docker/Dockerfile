@@ -8,16 +8,28 @@ COPY gradlew build.gradle settings.gradle ./
 RUN chmod +x ./gradlew
 
 # Download de dependências
-RUN ./gradlew dependencies --no-daemon
+RUN --mount=type=secret,id=gh_user \
+    --mount=type=secret,id=gh_token \
+    export FOODCORE_SHARED_REPO_USERNAME=$(cat /run/secrets/gh_user) && \
+    export FOODCORE_SHARED_REPO_TOKEN=$(cat /run/secrets/gh_token) && \
+    ./gradlew dependencies --no-daemon
 
 # Copiar código fonte
 COPY src/ ./src/
 
 # Corrigir erros de formatação
-RUN ./gradlew :spotlessApply
+RUN --mount=type=secret,id=gh_user \
+    --mount=type=secret,id=gh_token \
+    export FOODCORE_SHARED_REPO_USERNAME=$(cat /run/secrets/gh_user) && \
+    export FOODCORE_SHARED_REPO_TOKEN=$(cat /run/secrets/gh_token) && \
+    ./gradlew :spotlessApply
 
 # Construir o aplicativo
-RUN ./gradlew build -x test --no-daemon
+RUN --mount=type=secret,id=gh_user \
+    --mount=type=secret,id=gh_token \
+    export FOODCORE_SHARED_REPO_USERNAME=$(cat /run/secrets/gh_user) && \
+    export FOODCORE_SHARED_REPO_TOKEN=$(cat /run/secrets/gh_token) && \
+    ./gradlew build -x test --no-daemon
 
 # Imagem final
 FROM eclipse-temurin:21-jre-alpine AS runtime
