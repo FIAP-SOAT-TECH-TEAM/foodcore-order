@@ -1,0 +1,16 @@
+🍔 Food Core API - Helm Chart Deployment
+
+API de gerenciamento de pedidos para restaurantes fast-food com Clean Architecture, 
+DDD e monólitos modulares usando Spring Modulith.
+
+Acesse as URLs da aplicação:
+
+🍔 Food Core API: consulte Gateway URL do APIM
+🔎 Kibana (Monitoramento EFK): consulte FQDN do Ingress Público
+🗄️ Adminer (Gerenciador de BD): consulte FQDN do Ingress Público
+📡 Prometheus (Métricas de Aplicação): consulte FQDN do Ingress Público
+📊 Grafana (Dashboards de Monitoramento): consulte FQDN do Ingress Público
+
+
+🚀 A aplicação Food Core API foi implantada com sucesso!
+📖 Documentação completa: https://github.com/FIAP-SOAT-TECH-TEAM/food-core-api

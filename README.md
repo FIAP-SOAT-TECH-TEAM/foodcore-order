@@ -506,7 +506,7 @@ chmod +x food scripts/*.sh
 
 - **API**: <http://localhost/api>
 - **Swagger/OpenAPI**: <http://localhost/api/swagger-ui.html>
-- **Adminer (gerenciador de banco de dados)**: <http://localhost:8081>
+- **Adminer (gerenciador de banco de dados)**: <http://localhost:8083>
   - Sistema: PostgreSQL
   - Servidor: db
   - Usuário: postgres

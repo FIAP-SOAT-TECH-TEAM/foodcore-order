@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "api.fullname" . }}-deployment
+  labels:
+    app: {{ include "api.name" . }}
+  namespace: {{ .Values.namespace.api.name }}
+spec:
+  replicas: {{ .Values.api.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "api.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "api.name" . }}
+    spec:
+      containers:
+        - name: {{ include "api.name" . }}
+          image: "{{ .Values.api.image.repository }}:{{ .Values.api.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.api.ports.port }}
+              name: {{ .Values.api.ports.name }}
+
+          startupProbe:
+            httpGet:
+              path: {{ .Values.api.ingress.path }}/actuator/health
+              port: {{ .Values.api.ports.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 30
+
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.api.ingress.path }}/actuator/health/liveness
+              port: {{ .Values.api.ports.port }}
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.api.ingress.path }}/actuator/health/readiness
+              port: {{ .Values.api.ports.port }}
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          envFrom:
+            # ConfigMap
+            - configMapRef:
+                name: {{ include "api.fullname" . }}-config
+
+            # Secret criado pelo SecretProviderClass
+            - secretRef:
+                name: {{ include "api.fullname" . }}-secrets
+
+          volumeMounts:
+            # Obrigatório para o CSI Secrets Store
+            - name: api-secret-store-volume
+              mountPath: "/mnt/secrets-store"
+              readOnly: true
+
+          resources:
+            limits:
+              cpu: {{ .Values.api.resources.limits.cpu }}
+              memory: {{ .Values.api.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.api.resources.requests.cpu }}
+              memory: {{ .Values.api.resources.requests.memory }}
+
+      volumes:
+        - name: api-secret-store-volume
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: {{ include "api.fullname" . }}-secrets-crd

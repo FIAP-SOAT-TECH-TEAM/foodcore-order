@@ -8,16 +8,28 @@ COPY gradlew build.gradle settings.gradle ./
 RUN chmod +x ./gradlew
 
 # Download de dependências
-RUN ./gradlew dependencies --no-daemon
+RUN --mount=type=secret,id=gh_user \
+    --mount=type=secret,id=gh_token \
+    export FOODCORE_SHARED_REPO_USERNAME=$(cat /run/secrets/gh_user) && \
+    export FOODCORE_SHARED_REPO_TOKEN=$(cat /run/secrets/gh_token) && \
+    ./gradlew dependencies --no-daemon
 
 # Copiar código fonte
 COPY src/ ./src/
 
 # Corrigir erros de formatação
-RUN ./gradlew :spotlessApply
+RUN --mount=type=secret,id=gh_user \
+    --mount=type=secret,id=gh_token \
+    export FOODCORE_SHARED_REPO_USERNAME=$(cat /run/secrets/gh_user) && \
+    export FOODCORE_SHARED_REPO_TOKEN=$(cat /run/secrets/gh_token) && \
+    ./gradlew :spotlessApply
 
 # Construir o aplicativo
-RUN ./gradlew build -x test --no-daemon
+RUN --mount=type=secret,id=gh_user \
+    --mount=type=secret,id=gh_token \
+    export FOODCORE_SHARED_REPO_USERNAME=$(cat /run/secrets/gh_user) && \
+    export FOODCORE_SHARED_REPO_TOKEN=$(cat /run/secrets/gh_token) && \
+    ./gradlew build -x test --no-daemon
 
 # Imagem final
 FROM eclipse-temurin:21-jre-alpine AS runtime
@@ -40,14 +52,15 @@ COPY --from=build /app/build/libs/*.jar app.jar
 USER appuser
 
 # Porta da aplicação (modificável via docker-compose)
-EXPOSE 8080
+ARG APP_PORT
+EXPOSE ${APP_PORT}
 
 # Parâmetros para Monitoramento
 ENV JAVA_OPTS="-XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+UseStringDeduplication -Djava.security.egd=file:/dev/./urandom"
 
 # Verificação de saúde interna
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
-  CMD wget --spider -q http://localhost:8080/actuator/health || exit 1
+  CMD wget --spider -q http://localhost:${APP_PORT}/api/actuator/health || exit 1
 
 # Iniciar aplicação
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]

@@ -25,11 +25,6 @@
     description = "Chave do arquivo tfstate do foodcore-infra"
   }
 
-  variable "foodcore-backend-db-key" {
-    type        = string
-    description = "Chave do arquivo tfstate do foodcore-db"
-  }
-
   variable "foodcore-backend-auth-key" {
     type        = string
     description = "Chave do arquivo tfstate do foodcore-auth"
@@ -67,37 +62,6 @@
   variable "docker_image_tag" {
     type        = string
     description = "Tag da imagem Docker a ser utilizada."
-  }
-
-  variable "jwt_secret" {
-    type        = string
-    description = "Segredo para assinatura de tokens JWT."
-  }
-
-  variable "jwt_expires_time" {
-    type        = number
-    description = "Tempo de expiração do token JWT em minutos."
-    default     = 10
-  }
-
-  variable "mercadopago_base_url" {
-    type        = string
-    description = "URL base da API do MercadoPago."
-  }
-
-  variable "mercadopago_token" {
-    type        = string
-    description = "Token da API do MercadoPago."
-  }
-
-  variable "mercadopago_user_id" {
-    type        = string
-    description = "User ID da API do MercadoPago."
-  }
-
-  variable "mercadopago_pos_id" {
-    type        = string
-    description = "POS ID da API do MercadoPago."
   }
 
   variable "api_ingress_path" {

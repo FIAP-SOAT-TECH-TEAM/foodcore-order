@@ -1,15 +1,15 @@
-version: "3.8"
-
 services:
   # Aplicação principal
-  app:
+  order-ms:
     build:
       context: ..
       dockerfile: docker/Dockerfile
-    image: foodcoreapi-monolito-cleanarch:latest
-    container_name: foodcore-api
+      args:
+        APP_PORT: ${SERVER_PORT}
+    image: foodcore-order-ms:latest
+    container_name: foodcore-order-ms
     ports:
-      - "80:${SERVER_PORT}"
+      - "${SERVER_PORT}:${SERVER_PORT}"
     env_file:
       - .env
     healthcheck:
@@ -19,28 +19,27 @@ services:
       retries: 3
       start_period: 40s
     depends_on:
-      db:
+      order-ms-db:
         condition: service_healthy
     restart: unless-stopped
     networks:
       - fastfood-network
-    # Limite de recursos para evitar consumo excessivo
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 1G
 
-  # Banco de dados PosgreSQL
-  db:
+  # Banco de dados PostgreSQL
+  order-ms-db:
     image: postgres:16-alpine
-    container_name: foodcore-db
+    container_name: foodcore-order-ms-db
     ports:
-      - "${DB_PORT}:${DB_PORT}"
+      - "${DB_PORT}:5432"
     env_file:
       - .env
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - order_ms_postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
       interval: 5s
@@ -61,34 +60,9 @@ services:
     networks:
       - fastfood-network
 
-  # Ferramenta para gerenciar banco de dados (aepnas local)
-  adminer:
-    image: adminer:latest
-    container_name: foodcore-adminer
-    ports:
-      - "8081:8080"
-    depends_on:
-      - db
-    networks:
-      - fastfood-network
-    restart: unless-stopped
-
-  zipkin:
-    image: openzipkin/zipkin
-    container_name: foodcore-zipkin
-    ports:
-      - "${ZIPKIN_PORT}:${ZIPKIN_PORT}"
-    env_file:
-      - .env
-    environment:
-      - SERVER_PORT=${ZIPKIN_PORT}
-    networks:
-      - fastfood-network
-    restart: unless-stopped
-
 networks:
   fastfood-network:
     driver: bridge
 
 volumes:
-  postgres_data:
+  order_ms_postgres_data:

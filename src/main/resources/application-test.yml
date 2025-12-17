@@ -1,6 +1,7 @@
 # Configuração de datasource para testes (usando H2 em memória)
 spring:
   datasource:
+    # https://stackoverflow.com/questions/7988599/how-to-fake-enum-columns-in-the-h2-database-for-play-unit-testing
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     username: sa
     password: sa
@@ -9,7 +10,7 @@ spring:
   # Configuração do JPA para testes
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
       properties:
         hibernate:
           dialect: org.hibernate.dialect.H2Dialect
@@ -26,10 +27,55 @@ spring:
       enabled: true
       path: /h2-console
 
+  # Spring SMTP
+  mail:
+    host: ${SPRING_MAIL_HOST:localhost}
+    port: ${SPRING_MAIL_PORT:1025}
+    username: ${SPRING_MAIL_USERNAME:''}
+    password: ${SPRING_MAIL_PASSWD:''}
+    properties:
+      mail.smtp.auth: ${SPRING_MAIL_AUTH_ENABLED:false}
+      mail.smtp.starttls.enable: ${SPRING_MAIL_TLS_ENABLED:false}
+
+aws:
+  cognito:
+    aws-credentials: ${AWS_CREDENTIALS:AWS_ACCESS_KEY_ID=test;AWS_SECRET_ACCESS_KEY=test;AWS_REGION=us-east-1;AWS_SESSION_TOKEN=localstack-session}
+    userPoolId: ${AWS_COGNITO_USER_POOL_ID:us-east-1_aa8ae69972d7492cb2de9cf3ecbf1de2}
+    endpoint: ${AWS_COGNITO_ENDPOINT:}
+
+azsvcbus:
+  connection-string: ${AZ_SVC_BUS_CONNECTION_STRING:Endpoint=sb://localhost;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;}
+
+# Tracing Distribuído
+management:
+  tracing:
+    enabled: false
+  zipkin:
+    tracing:
+      endpoint:
+
 # Configurações de log para testes
 logging:
   level:
     root: WARN
+    integration.bdd: DEBUG
     com.fastfood: DEBUG
     org.springframework.test: INFO
     org.hibernate.SQL: DEBUG
+
+server:
+  address: ${SERVER_ADDRESS:0.0.0.0}
+  port: ${SERVER_PORT:8085}
+  servlet:
+    context-path: ${SERVER_CONTEXT_PATH:/api}
+
+# Microsserviços
+catalog:
+  service:
+    name: ${CATALOG_MS_SERVICE_NAME:catalog}
+    url: http://${CATALOG_MS_HOSTNAME:localhost}${server.servlet.context-path}
+
+payment:
+  service:
+    name: ${PAYMENT_MS_SERVICE_NAME:payment}
+    url: http://${PAYMENT_MS_HOSTNAME:localhost}${server.servlet.context-path}

@@ -78,13 +78,6 @@ CREATE TABLE IF NOT EXISTS order_items
 ) REFERENCES orders
 (
   id
-),
-  CONSTRAINT fk_order_item_product FOREIGN KEY
-(
-  product_id
-) REFERENCES products
-(
-  id
 )
   );
 

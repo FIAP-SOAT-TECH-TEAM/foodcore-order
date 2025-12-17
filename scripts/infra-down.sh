@@ -3,56 +3,33 @@
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
 
-echo "===== Parando infraestrutura ====="
+echo "===== Parando banco de dados ====="
 
 # Verificar se o Docker está rodando
-check_docker() {
-  docker info &>/dev/null
-  return $?
-}
-
-if ! check_docker; then
+docker info &>/dev/null
+if [ $? -ne 0 ]; then
   echo "ERRO: O Docker não está rodando."
-  echo "Por favor, inicie o Docker Desktop e tente novamente."
   exit 1
 fi
 
-# Navegar para o diretório docker
 cd "$PROJECT_ROOT/docker"
 
-# Verificar quais contêineres de infraestrutura estão rodando
-INFRA_CONTAINERS=$(docker ps --filter "name=food-core-(db)" --format "{{.Names}}")
+# Verificar se o contêiner do banco está rodando
+DB_CONTAINER=$(docker ps --filter "name=foodcore-order-ms-db" --format "{{.Names}}")
 
-if [ -z "$INFRA_CONTAINERS" ]; then
-  echo "Nenhum contêiner de infraestrutura em execução."
+if [ -z "$DB_CONTAINER" ]; then
+  echo "Nenhum contêiner do banco em execução."
   exit 0
 fi
 
-echo "Contêineres de infraestrutura em execução:"
-echo "$INFRA_CONTAINERS"
-echo
+echo "Contêiner do banco em execução: $DB_CONTAINER"
+echo "-> Parando contêiner..."
+docker-compose stop order-ms-db
 
-# Parar os contêineres de infraestrutura
-echo "-> Parando serviços de infraestrutura..."
-docker-compose stop db
-
-# Verificar se todos os contêineres foram parados
-STILL_RUNNING=$(docker ps --filter "name=food-core-(db)" --format "{{.Names}}")
+# Verificação final
+STILL_RUNNING=$(docker ps --filter "name=foodcore-order-ms-db" --format "{{.Names}}")
 if [ -z "$STILL_RUNNING" ]; then
-  echo "===== Infraestrutura parada com sucesso! ====="
+  echo "===== Banco de dados parado com sucesso! ====="
 else
-  echo "AVISO: Alguns contêineres ainda estão em execução:"
-  echo "$STILL_RUNNING"
-  echo
-  echo "Forçando a parada de todos os contêineres..."
-  docker-compose down
-  
-  # Verificação final
-  STILL_RUNNING=$(docker ps --filter "name=food-core-(db)" --format "{{.Names}}")
-  if [ -z "$STILL_RUNNING" ]; then
-    echo "===== Infraestrutura parada com sucesso! ====="
-  else
-    echo "ERRO: Não foi possível parar todos os contêineres."
-    echo "Por favor, verifique e pare-os manualmente com: docker ps"
-  fi
-fi 
+  echo "ERRO: Não foi possível parar o contêiner do banco."
+fi
