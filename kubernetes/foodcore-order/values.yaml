@@ -1,6 +1,10 @@
 namespace:
   api:
     name: order
+  payment:
+    name: payment
+  catalog:
+    name: catalog
 
 ingress:
   name: "order"

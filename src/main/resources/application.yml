@@ -2,6 +2,10 @@ spring:
   application:
     name: foodcore-order
 
+  threads:
+    virtual:
+      enabled: true
+
   # Perfil padrão (development)
   profiles:
     active: local
@@ -16,6 +20,7 @@ spring:
       maximum-pool-size: 10
       minimum-idle: 5
 
+  # Spring Clouud
   cloud:
     openfeign:
       circuitbreaker:
@@ -25,6 +30,13 @@ spring:
           default:
             connectTimeout: 500
             readTimeout: 2000
+    kubernetes:
+      discovery:
+        namespaces:
+          - catalog
+          - payment
+      # https://kubernetes.io/docs/concepts/services-networking/service/#cloud-native-service-discovery
+      use-endpoint-slices: true
 
   # JPA / Hibernate
   jpa:
@@ -70,7 +82,7 @@ spring:
       mail.smtp.auth: ${SPRING_MAIL_AUTH_ENABLED:}
       mail.smtp.starttls.enable: ${SPRING_MAIL_TLS_ENABLED:}
 
-
+# Circuit Breaker
 resilience4j:
   circuitbreaker:
     configs:
