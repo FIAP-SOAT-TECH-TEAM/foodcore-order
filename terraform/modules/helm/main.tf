@@ -10,6 +10,21 @@ resource "helm_release" "foodcoreapi" {
   force_update    = true
 
   set {
+    name  = "namespace.api.name"
+    value = data.terraform_remote_state.infra.outputs.aks_order_namespace_name
+  }
+
+  set {
+    name  = "namespace.payment.name"
+    value = data.terraform_remote_state.infra.outputs.aks_payment_namespace_name
+  }
+
+  set {
+    name  = "namespace.catalog.name"
+    value = data.terraform_remote_state.infra.outputs.aks_catalog_namespace_name
+  }
+
+  set {
     name  = "ingress.hosts[0].host"
     value = data.terraform_remote_state.infra.outputs.api_order_private_dns_fqdn
   }

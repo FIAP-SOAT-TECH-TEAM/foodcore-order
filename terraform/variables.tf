@@ -35,7 +35,7 @@
   variable "release_name" {
     type        = string
     description = "Nome do release do Helm."
-    default = "foodcoreapi"
+    default = "foodcore-order"
   }
 
   variable "release_namespace" {
@@ -73,7 +73,7 @@
   variable "apim_api_name" {
     description = "Nome da API no API Management"
     type        = string
-    default = "foodcore-api"
+    default = "foodcore-order"
   }
 
   variable "apim_api_version" {
@@ -85,7 +85,7 @@
   variable "apim_display_name" {
     description = "Nome exibido da API no API Management"
     type        = string
-    default     = "Foodcore API"
+    default     = "Foodcore Order Microsservice"
   }
 
   variable "swagger_path" {
