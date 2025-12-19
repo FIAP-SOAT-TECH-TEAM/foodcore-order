@@ -8,8 +8,9 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: azure/application-gateway
     appgw.ingress.kubernetes.io/use-private-ip: "true"
-    appgw.ingress.kubernetes.io/health-probe-path: {{ .Values.api.ingress.path }}{{ .Values.api.probe.path.readiness }}
-    appgw.ingress.kubernetes.io/health-probe-port: {{ .Values.api.ports.port }}
+    appgw.ingress.kubernetes.io/health-probe-path: {{ printf "%s%s" .Values.api.ingress.path .Values.api.probe.path.readiness | quote }}
+    appgw.ingress.kubernetes.io/health-probe-port: {{ .Values.api.ports.port | quote }}
+
 spec:
   {{- if .Values.ingress.tls }}
   tls:
