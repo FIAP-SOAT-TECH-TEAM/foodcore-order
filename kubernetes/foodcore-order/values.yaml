@@ -1,10 +1,10 @@
 namespace:
   api:
-    name: order
+    name: replaced
   payment:
-    name: payment
+    name: replaced
   catalog:
-    name: catalog
+    name: replaced
 
 ingress:
   name: "order"
