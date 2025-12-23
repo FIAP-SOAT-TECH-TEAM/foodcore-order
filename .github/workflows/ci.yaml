@@ -24,7 +24,6 @@ env:
   TF_VAR_chart_version: "0.1.${{ github.run_number }}"
   TF_VAR_docker_image_tag: "${{ github.run_number }}"
   TF_VAR_swagger_path: "../build/openapi/swagger.json"
-  TF_VAR_api_ingress_path: "/api"
 
 jobs:
   infra-info:
@@ -122,8 +121,6 @@ jobs:
 
       - name: Generate OpenApi File
         run: ./gradlew generateOpenAPI
-        env:
-          SERVER_CONTEXT_PATH: "/api"
 
       - name: Upload OpenApi File
         uses: actions/upload-artifact@v4
@@ -156,6 +153,7 @@ jobs:
       - name: Helm Login to ACR
         run: |
           az account set --subscription ${{secrets.AZURE_SUBSCRIPTION_ID}}
+          
           ACR_LOGIN_SERVER=${{ needs.infra-info.outputs.acr_login_server }}
           ACR_USERNAME=$(az acr credential show --name ${ACR_LOGIN_SERVER} --query "username" -o tsv)
           ACR_PASSWORD=$(az acr credential show --name ${ACR_LOGIN_SERVER} --query "passwords[0].value" -o tsv)

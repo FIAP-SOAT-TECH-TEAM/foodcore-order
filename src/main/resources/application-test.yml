@@ -67,15 +67,15 @@ server:
   address: ${SERVER_ADDRESS:0.0.0.0}
   port: ${SERVER_PORT:8085}
   servlet:
-    context-path: ${SERVER_CONTEXT_PATH:/api}
+    context-path: /
 
 # Microsserviços
 catalog:
   service:
     name: ${CATALOG_MS_SERVICE_NAME:catalog}
-    url: http://${CATALOG_MS_HOSTNAME:localhost}${server.servlet.context-path}
+    url: ${CATALOG_MS_SERVICE_URL:}
 
 payment:
   service:
     name: ${PAYMENT_MS_SERVICE_NAME:payment}
-    url: http://${PAYMENT_MS_HOSTNAME:localhost}${server.servlet.context-path}
+    url: ${PAYMENT_MS_SERVICE_URL:}

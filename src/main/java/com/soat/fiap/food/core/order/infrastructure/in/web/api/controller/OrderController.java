@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Controlador REST para gerenciamento de pedidos
  */
-@RestController @RequestMapping("/orders") @Tag(name = "Pedidos", description = "API para gerenciamento de pedidos")
+@RestController @RequestMapping("/") @Tag(name = "Pedidos", description = "API para gerenciamento de pedidos")
 @Slf4j
 public class OrderController {
 
