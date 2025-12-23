@@ -3,7 +3,7 @@ package com.soat.fiap.food.core.order.infrastructure.in.event.listener.azsvcbus.
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.soat.fiap.food.core.order.core.interfaceadapters.bff.controller.web.api.ChargebackOrderController;
+import com.soat.fiap.food.core.order.core.interfaceadapters.controller.ChargebackOrderController;
 import com.soat.fiap.food.core.order.core.interfaceadapters.dto.events.OrderCreatedEventDto;
 import com.soat.fiap.food.core.order.infrastructure.common.source.OrderDataSource;
 import com.soat.fiap.food.core.order.infrastructure.common.source.PaymentDataSource;

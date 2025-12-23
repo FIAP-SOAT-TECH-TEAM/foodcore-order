@@ -7,10 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import com.soat.fiap.food.core.order.core.interfaceadapters.bff.controller.web.api.GetActiveOrdersSortedController;
-import com.soat.fiap.food.core.order.core.interfaceadapters.bff.controller.web.api.GetOrderByIdController;
-import com.soat.fiap.food.core.order.core.interfaceadapters.bff.controller.web.api.SaveOrderController;
-import com.soat.fiap.food.core.order.core.interfaceadapters.bff.controller.web.api.UpdateOrderStatusController;
+import com.soat.fiap.food.core.order.core.interfaceadapters.controller.GetActiveOrdersSortedController;
+import com.soat.fiap.food.core.order.core.interfaceadapters.controller.GetOrderByIdController;
+import com.soat.fiap.food.core.order.core.interfaceadapters.controller.SaveOrderController;
+import com.soat.fiap.food.core.order.core.interfaceadapters.controller.UpdateOrderStatusController;
 import com.soat.fiap.food.core.order.infrastructure.common.source.CatalogDataSource;
 import com.soat.fiap.food.core.order.infrastructure.common.source.EventPublisherSource;
 import com.soat.fiap.food.core.order.infrastructure.common.source.OrderDataSource;

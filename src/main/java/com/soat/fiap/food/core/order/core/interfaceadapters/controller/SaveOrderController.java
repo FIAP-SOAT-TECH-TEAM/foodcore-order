@@ -1,11 +1,11 @@
-package com.soat.fiap.food.core.order.core.interfaceadapters.bff.controller.web.api;
+package com.soat.fiap.food.core.order.core.interfaceadapters.controller;
 
 import com.soat.fiap.food.core.order.core.application.inputs.mappers.CreateOrderMapper;
 import com.soat.fiap.food.core.order.core.application.usecases.ApplyDiscountUseCase;
 import com.soat.fiap.food.core.order.core.application.usecases.CreateOrderUseCase;
 import com.soat.fiap.food.core.order.core.application.usecases.EnsureValidOrderItemsUseCase;
 import com.soat.fiap.food.core.order.core.application.usecases.PublishOrderCreatedEventUseCase;
-import com.soat.fiap.food.core.order.core.interfaceadapters.bff.presenter.web.api.OrderPresenter;
+import com.soat.fiap.food.core.order.core.interfaceadapters.presenter.OrderPresenter;
 import com.soat.fiap.food.core.order.core.interfaceadapters.gateways.CatalogGateway;
 import com.soat.fiap.food.core.order.core.interfaceadapters.gateways.EventPublisherGateway;
 import com.soat.fiap.food.core.order.core.interfaceadapters.gateways.OrderGateway;

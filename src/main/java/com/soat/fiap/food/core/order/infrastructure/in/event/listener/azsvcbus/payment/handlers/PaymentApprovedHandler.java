@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.soat.fiap.food.core.order.core.domain.vo.OrderStatus;
-import com.soat.fiap.food.core.order.core.interfaceadapters.bff.controller.web.api.UpdateOrderStatusController;
+import com.soat.fiap.food.core.order.core.interfaceadapters.controller.UpdateOrderStatusController;
 import com.soat.fiap.food.core.order.core.interfaceadapters.dto.events.PaymentApprovedEventDto;
 import com.soat.fiap.food.core.order.infrastructure.common.source.EventPublisherSource;
 import com.soat.fiap.food.core.order.infrastructure.common.source.OrderDataSource;

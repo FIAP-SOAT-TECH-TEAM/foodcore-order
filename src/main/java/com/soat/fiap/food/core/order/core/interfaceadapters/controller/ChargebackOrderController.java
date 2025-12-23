@@ -1,4 +1,4 @@
-package com.soat.fiap.food.core.order.core.interfaceadapters.bff.controller.web.api;
+package com.soat.fiap.food.core.order.core.interfaceadapters.controller;
 
 import com.soat.fiap.food.core.order.core.application.usecases.EnsureOrderPaymentIsValidUseCase;
 import com.soat.fiap.food.core.order.core.application.usecases.UpdateOrderStatusUseCase;

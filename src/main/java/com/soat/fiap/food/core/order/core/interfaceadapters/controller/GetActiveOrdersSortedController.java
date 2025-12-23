@@ -1,9 +1,9 @@
-package com.soat.fiap.food.core.order.core.interfaceadapters.bff.controller.web.api;
+package com.soat.fiap.food.core.order.core.interfaceadapters.controller;
 
 import java.util.List;
 
 import com.soat.fiap.food.core.order.core.application.usecases.GetActiveOrdersSortedUseCase;
-import com.soat.fiap.food.core.order.core.interfaceadapters.bff.presenter.web.api.OrderPresenter;
+import com.soat.fiap.food.core.order.core.interfaceadapters.presenter.OrderPresenter;
 import com.soat.fiap.food.core.order.core.interfaceadapters.gateways.OrderGateway;
 import com.soat.fiap.food.core.order.infrastructure.common.source.OrderDataSource;
 import com.soat.fiap.food.core.order.infrastructure.in.web.api.dto.response.OrderResponse;
