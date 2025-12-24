@@ -1,8 +1,8 @@
 package com.soat.fiap.food.core.order.core.interfaceadapters.controller;
 
 import com.soat.fiap.food.core.order.core.application.usecases.GetOrderByIdUseCase;
-import com.soat.fiap.food.core.order.core.interfaceadapters.presenter.OrderPresenter;
 import com.soat.fiap.food.core.order.core.interfaceadapters.gateways.OrderGateway;
+import com.soat.fiap.food.core.order.core.interfaceadapters.presenter.OrderPresenter;
 import com.soat.fiap.food.core.order.infrastructure.common.source.OrderDataSource;
 import com.soat.fiap.food.core.order.infrastructure.in.web.api.dto.response.OrderResponse;
 

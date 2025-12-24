@@ -5,10 +5,10 @@ import com.soat.fiap.food.core.order.core.application.usecases.ApplyDiscountUseC
 import com.soat.fiap.food.core.order.core.application.usecases.CreateOrderUseCase;
 import com.soat.fiap.food.core.order.core.application.usecases.EnsureValidOrderItemsUseCase;
 import com.soat.fiap.food.core.order.core.application.usecases.PublishOrderCreatedEventUseCase;
-import com.soat.fiap.food.core.order.core.interfaceadapters.presenter.OrderPresenter;
 import com.soat.fiap.food.core.order.core.interfaceadapters.gateways.CatalogGateway;
 import com.soat.fiap.food.core.order.core.interfaceadapters.gateways.EventPublisherGateway;
 import com.soat.fiap.food.core.order.core.interfaceadapters.gateways.OrderGateway;
+import com.soat.fiap.food.core.order.core.interfaceadapters.presenter.OrderPresenter;
 import com.soat.fiap.food.core.order.infrastructure.common.source.CatalogDataSource;
 import com.soat.fiap.food.core.order.infrastructure.common.source.EventPublisherSource;
 import com.soat.fiap.food.core.order.infrastructure.common.source.OrderDataSource;
