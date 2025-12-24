@@ -73,9 +73,9 @@ server:
 catalog:
   service:
     name: ${CATALOG_MS_SERVICE_NAME:catalog}
-    url: ${CATALOG_MS_SERVICE_URL:}
+    url: ${CATALOG_MS_SERVICE_URL:http://localhost}
 
 payment:
   service:
     name: ${PAYMENT_MS_SERVICE_NAME:payment}
-    url: ${PAYMENT_MS_SERVICE_URL:}
+    url: ${PAYMENT_MS_SERVICE_URL:http://localhost}
