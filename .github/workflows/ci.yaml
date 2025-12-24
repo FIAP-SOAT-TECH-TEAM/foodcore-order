@@ -115,7 +115,7 @@ jobs:
         run: ./gradlew jacocoTestReport
 
       - name: Build and analyze with SonarCloud
-        run: ./gradlew sonar -Dsonar.qualitygate.wait=true
+        run: ./gradlew sonar "-Dsonar.qualitygate.wait=true" --info
         env:
           SONAR_CLOUD_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN }}
 
