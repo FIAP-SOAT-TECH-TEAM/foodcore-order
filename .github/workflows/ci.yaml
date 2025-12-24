@@ -114,18 +114,10 @@ jobs:
       - name: Generate Jacoco Report
         run: ./gradlew jacocoTestReport
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2
-        with:
-          projectBaseDir: .
+      - name: Build and analyze with SonarCloud
+        run: ./gradlew sonar "-Dsonar.qualitygate.wait=true" --info
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN }}
-
-      - name: Check Quality Gate
-        uses: SonarSource/sonarqube-quality-gate-action@v1.1.0
-        timeout-minutes: 5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN }}
+          SONAR_CLOUD_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN }}
 
   #     - name: Generate OpenApi File
   #       run: ./gradlew generateOpenAPI
