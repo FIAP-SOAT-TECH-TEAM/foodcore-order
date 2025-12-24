@@ -323,7 +323,7 @@ spotless {
 }
 
 openApi {
-	apiDocsUrl.set("http://localhost:8085/api/v3/api-docs")
+	apiDocsUrl.set("http://localhost:8085/v3/api-docs")
 	outputDir.set(file("$buildDir/openapi"))
 	outputFileName.set("swagger.json")
 
