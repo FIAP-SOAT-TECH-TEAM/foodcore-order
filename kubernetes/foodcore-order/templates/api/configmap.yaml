@@ -6,13 +6,12 @@ metadata:
     app: {{ include "api.name" . }}
   namespace: {{ .Values.namespace.api.name }}
 data:
-  SERVER_CONTEXT_PATH: {{ .Values.api.ingress.path | quote }}
   SERVER_ADDRESS: {{ .Values.api.server.address | quote }}
   SERVER_PORT: {{ .Values.api.server.port | quote }}
   SPRING_PROFILES_ACTIVE: {{ .Values.api.server.profilesActive | quote }}
   SPRING_MAIL_AUTH_ENABLED: {{ .Values.api.spring.mail.auth.enabled | quote }}
   SPRING_MAIL_TLS_ENABLED: {{ .Values.api.spring.mail.tls.enabled | quote }}
 
-  CATALOG_MS_SERVICE_NAME: {{ include "api.fullname" . }}-catalog-service
-  PAYMENT_MS_SERVICE_NAME: {{ include "api.fullname" . }}-payment-service
+  CATALOG_MS_SERVICE_NAME: foodcore-catalog-service
+  PAYMENT_MS_SERVICE_NAME: foodcore-payment-service
   # ZIPKIN_URL: 

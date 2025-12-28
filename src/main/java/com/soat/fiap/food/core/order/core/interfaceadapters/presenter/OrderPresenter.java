@@ -1,4 +1,4 @@
-package com.soat.fiap.food.core.order.core.interfaceadapters.bff.presenter.web.api;
+package com.soat.fiap.food.core.order.core.interfaceadapters.presenter;
 
 import java.util.List;
 

@@ -13,7 +13,7 @@ import com.soat.fiap.food.core.order.core.application.usecases.EnsureOrderPaymen
 import com.soat.fiap.food.core.order.core.application.usecases.UpdateOrderStatusUseCase;
 import com.soat.fiap.food.core.order.core.domain.exceptions.OrderAlreadyHasStatusException;
 import com.soat.fiap.food.core.order.core.domain.vo.OrderStatus;
-import com.soat.fiap.food.core.order.core.interfaceadapters.bff.controller.web.api.ChargebackOrderController;
+import com.soat.fiap.food.core.order.core.interfaceadapters.controller.ChargebackOrderController;
 import com.soat.fiap.food.core.order.infrastructure.common.source.OrderDataSource;
 import com.soat.fiap.food.core.order.infrastructure.common.source.PaymentDataSource;
 
