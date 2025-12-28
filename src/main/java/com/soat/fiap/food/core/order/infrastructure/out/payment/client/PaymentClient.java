@@ -13,6 +13,6 @@ import com.soat.fiap.food.core.order.infrastructure.out.payment.entity.PaymentSt
 @FeignClient(name = "${payment.service.name}", url = "${payment.service.url}")
 public interface PaymentClient {
 
-	@GetMapping("/payments/{orderId}/latest")
+	@GetMapping("/{orderId}/latest")
 	ResponseEntity<PaymentStatusEntity> getOrderStatus(@PathVariable Long orderId);
 }

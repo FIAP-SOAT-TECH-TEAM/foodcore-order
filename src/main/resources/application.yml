@@ -129,7 +129,7 @@ server:
   address: ${SERVER_ADDRESS:}
   port: ${SERVER_PORT:}
   servlet:
-    context-path: ${SERVER_CONTEXT_PATH:}
+    context-path: /
   compression:
     enabled: true
   error:
@@ -140,9 +140,9 @@ server:
 catalog:
   service:
     name: ${CATALOG_MS_SERVICE_NAME:}
-    url: http://${CATALOG_MS_HOSTNAME:}${server.servlet.context-path}
+    url: ${CATALOG_MS_SERVICE_URL:}
 
 payment:
   service:
     name: ${PAYMENT_MS_SERVICE_NAME:}
-    url: http://${PAYMENT_MS_HOSTNAME:}${server.servlet.context-path}
+    url: ${PAYMENT_MS_SERVICE_URL:}

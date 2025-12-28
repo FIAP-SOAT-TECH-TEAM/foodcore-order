@@ -21,7 +21,6 @@ env:
   TF_VAR_chart_version: "0.1.${{ github.run_number }}"
   TF_VAR_docker_image_tag: "${{ github.run_number }}"
   TF_VAR_swagger_path: "../build/openapi/swagger.json"
-  TF_VAR_api_ingress_path: "/api"
 
 jobs:
   infra-info:

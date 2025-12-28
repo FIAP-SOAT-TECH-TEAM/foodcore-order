@@ -75,7 +75,7 @@ resource "azurerm_api_management_api_policy" "set_backend_api" {
       </set-header>
 
       <!-- Define o backend real -->
-      <set-backend-service base-url="http://${data.terraform_remote_state.infra.outputs.api_private_dns_fqdn}/${var.api_ingress_path}" />
+      <set-backend-service base-url="http://${data.terraform_remote_state.infra.outputs.api_order_private_dns_fqdn}/${var.api_ingress_path}" />
     </inbound>
 
     <backend>

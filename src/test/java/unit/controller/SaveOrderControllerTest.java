@@ -13,7 +13,7 @@ import com.soat.fiap.food.core.order.core.application.usecases.ApplyDiscountUseC
 import com.soat.fiap.food.core.order.core.application.usecases.CreateOrderUseCase;
 import com.soat.fiap.food.core.order.core.application.usecases.EnsureValidOrderItemsUseCase;
 import com.soat.fiap.food.core.order.core.application.usecases.PublishOrderCreatedEventUseCase;
-import com.soat.fiap.food.core.order.core.interfaceadapters.bff.controller.web.api.SaveOrderController;
+import com.soat.fiap.food.core.order.core.interfaceadapters.controller.SaveOrderController;
 import com.soat.fiap.food.core.order.infrastructure.common.source.CatalogDataSource;
 import com.soat.fiap.food.core.order.infrastructure.common.source.EventPublisherSource;
 import com.soat.fiap.food.core.order.infrastructure.common.source.OrderDataSource;

@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.soat.fiap.food.core.order.core.interfaceadapters.bff.controller.web.api.UpdateOrderStatusController;
+import com.soat.fiap.food.core.order.core.interfaceadapters.controller.UpdateOrderStatusController;
 import com.soat.fiap.food.core.order.core.interfaceadapters.dto.events.OrderReadyEventDto;
 import com.soat.fiap.food.core.order.infrastructure.out.event.publisher.azsvcbus.AzSvcBusEventPublisher;
 

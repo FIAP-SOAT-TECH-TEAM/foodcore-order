@@ -67,6 +67,7 @@
   variable "api_ingress_path" {
     type        = string
     description = "Caminho de ingress da API."
+    default = "/api/order"
   }
 
 # APIM
