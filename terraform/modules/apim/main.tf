@@ -26,11 +26,17 @@ resource "azurerm_api_management_api_policy" "set_backend_api" {
       <!-- Extrai token -->
       <set-variable name="bearerToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Split(' ').Last())" />
 
-      <!-- Normaliza Path (adiciona / se não existir) -->
+      <!-- Normaliza Path -->
       <set-variable name="normalizedPath" value="@{
-          var path = context.Request?.Url?.Path ?? "";
-          var normalizedPath = path.StartsWith("/") ? path : $"/{path}";
-          return normalizedPath;
+          var path = context.Request.OriginalUrl?.Path ?? "";
+
+          // Remove barra final se existir e não for apenas "/"
+          if (path.Length > 1 && path.EndsWith("/"))
+          {
+              path = path.TrimEnd('/');
+          }
+
+          return path;
       }" />
 
       <!-- Valida token -->
@@ -87,11 +93,17 @@ resource "azurerm_api_management_api_policy" "set_backend_api" {
     </outbound>
 
     <on-error>
-      <!-- Normaliza Path (adiciona / se não existir) -->
+      <!-- Normaliza Path -->
       <set-variable name="normalizedPath" value="@{
-          var path = context.Request?.Url?.Path ?? "";
-          var normalizedPath = path.StartsWith("/") ? path : $"/{path}";
-          return normalizedPath;
+          var path = context.Request.OriginalUrl?.Path ?? "";
+
+          // Remove barra final se existir e não for apenas "/"
+          if (path.Length > 1 && path.EndsWith("/"))
+          {
+              path = path.TrimEnd('/');
+          }
+
+          return path;
       }" />
       <choose>
         <when condition="@(context.LastError != null)">
