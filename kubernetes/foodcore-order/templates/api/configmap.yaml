@@ -12,6 +12,6 @@ data:
   SPRING_MAIL_AUTH_ENABLED: {{ .Values.api.spring.mail.auth.enabled | quote }}
   SPRING_MAIL_TLS_ENABLED: {{ .Values.api.spring.mail.tls.enabled | quote }}
 
-  CATALOG_MS_SERVICE_NAME: {{ include "api.fullname" . }}-catalog-service
-  PAYMENT_MS_SERVICE_NAME: {{ include "api.fullname" . }}-payment-service
+  CATALOG_MS_SERVICE_NAME: foodcore-catalog-service
+  PAYMENT_MS_SERVICE_NAME: foodcore-payment-service
   # ZIPKIN_URL: 

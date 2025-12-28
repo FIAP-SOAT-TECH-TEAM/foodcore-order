@@ -26,52 +26,52 @@ env:
   TF_VAR_swagger_path: "../build/openapi/swagger.json"
 
 jobs:
-  # infra-info:
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     TF_VAR_docker_image_uri: "default"
-  #   outputs:
-  #     acr_login_server: ${{ steps.acr.outputs.acr_login_server }}
-  #   steps:
-  #     - name: Checkout repo
-  #       uses: actions/checkout@v3
+  infra-info:
+    runs-on: ubuntu-latest
+    env:
+      TF_VAR_docker_image_uri: "default"
+    outputs:
+      acr_login_server: ${{ steps.acr.outputs.acr_login_server }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-  #     - name: Login Azure
-  #       uses: azure/login@v1
-  #       with:
-  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Login Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-  #     - name: Setup Terraform
-  #       uses: hashicorp/setup-terraform@v2
-  #       with:
-  #         terraform_wrapper: false
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false
 
-  #     - name: Terraform Init
-  #       working-directory: terraform
-  #       run: |
-  #         terraform init \
-  #           -backend-config="resource_group_name=${{secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME}}" \
-  #           -backend-config="storage_account_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}" \
-  #           -backend-config="container_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}" \
-  #           -backend-config="subscription_id=${{secrets.AZURE_SUBSCRIPTION_ID}}" \
-  #           -backend-config="key=${{secrets.BACKEND_AZURE_KEY}}"
+      - name: Terraform Init
+        working-directory: terraform
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=${{secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME}}" \
+            -backend-config="storage_account_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}" \
+            -backend-config="container_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}" \
+            -backend-config="subscription_id=${{secrets.AZURE_SUBSCRIPTION_ID}}" \
+            -backend-config="key=${{secrets.BACKEND_AZURE_KEY}}"
 
-  #     # Somente para que o output seja criado
-  #     - name: Terraform Apply Refresh Only
-  #       working-directory: terraform
-  #       run: terraform apply --refresh-only --auto-approve
+      # Somente para que o output seja criado
+      - name: Terraform Apply Refresh Only
+        working-directory: terraform
+        run: terraform apply --refresh-only --auto-approve
 
-  #     - name: Get ACR Login Server from remote state
-  #       id: acr
-  #       working-directory: terraform
-  #       run: echo "acr_login_server=$(terraform output -raw acr_login_server_from_remote)" >> $GITHUB_OUTPUT
+      - name: Get ACR Login Server from remote state
+        id: acr
+        working-directory: terraform
+        run: echo "acr_login_server=$(terraform output -raw acr_login_server_from_remote)" >> $GITHUB_OUTPUT
 
   build:
     runs-on: ubuntu-latest
     env:
       FOODCORE_SHARED_REPO_USERNAME: ${{ secrets.FOODCORE_SHARED_REPO_USERNAME }}
       FOODCORE_SHARED_REPO_TOKEN: ${{ secrets.FOODCORE_SHARED_REPO_TOKEN }}
-    # needs: infra-info
+    needs: infra-info
     steps:
       - uses: actions/checkout@v3
         with:
@@ -106,10 +106,10 @@ jobs:
       - name: Unit Test with Gradle
         run: ./gradlew test
 
-      # - name: Integration Test with Gradle (Cucumber + TestContainers)
-      #   run: ./gradlew cucumber
-      #   env:
-      #     LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
+      - name: Integration Test with Gradle (Cucumber + TestContainers)
+        run: ./gradlew cucumber
+        env:
+          LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
 
       - name: Generate Jacoco Report
         run: ./gradlew jacocoTestReport
@@ -119,116 +119,116 @@ jobs:
         env:
           SONAR_CLOUD_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN }}
 
-  #     - name: Generate OpenApi File
-  #       run: ./gradlew generateOpenAPI
+      - name: Generate OpenApi File
+        run: ./gradlew generateOpenAPI
 
-  #     - name: Upload OpenApi File
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: openapi
-  #         path: build/openapi/swagger.json
+      - name: Upload OpenApi File
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi
+          path: build/openapi/swagger.json
 
-  # push:
-  #   needs: [build, infra-info]
-  #   runs-on: ubuntu-latest
+  push:
+    needs: [build, infra-info]
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout repo
-  #       uses: actions/checkout@v3
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-  #     - name: Login Azure
-  #       uses: azure/login@v1
-  #       with:
-  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Login Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-  #     - name: Setup Helm
-  #       uses: azure/setup-helm@v3
-  #       with:
-  #         version: v3.12.0
+      - name: Setup Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.12.0
 
-  #     - name: Docker Login to ACR
-  #       run: |
-  #         az acr login --name ${{ needs.infra-info.outputs.acr_login_server }}
+      - name: Docker Login to ACR
+        run: |
+          az acr login --name ${{ needs.infra-info.outputs.acr_login_server }}
 
-  #     - name: Helm Login to ACR
-  #       run: |
-  #         az account set --subscription ${{secrets.AZURE_SUBSCRIPTION_ID}}
+      - name: Helm Login to ACR
+        run: |
+          az account set --subscription ${{secrets.AZURE_SUBSCRIPTION_ID}}
           
-  #         ACR_LOGIN_SERVER=${{ needs.infra-info.outputs.acr_login_server }}
-  #         ACR_USERNAME=$(az acr credential show --name ${ACR_LOGIN_SERVER} --query "username" -o tsv)
-  #         ACR_PASSWORD=$(az acr credential show --name ${ACR_LOGIN_SERVER} --query "passwords[0].value" -o tsv)
-  #         echo $ACR_PASSWORD | helm registry login $ACR_LOGIN_SERVER --username $ACR_USERNAME --password-stdin
+          ACR_LOGIN_SERVER=${{ needs.infra-info.outputs.acr_login_server }}
+          ACR_USERNAME=$(az acr credential show --name ${ACR_LOGIN_SERVER} --query "username" -o tsv)
+          ACR_PASSWORD=$(az acr credential show --name ${ACR_LOGIN_SERVER} --query "passwords[0].value" -o tsv)
+          echo $ACR_PASSWORD | helm registry login $ACR_LOGIN_SERVER --username $ACR_USERNAME --password-stdin
 
-  #     - name: Build and Push Docker Image
-  #       run: |
-  #         IMAGE_NAME=${{ needs.infra-info.outputs.acr_login_server }}/foodcore-order:${{ github.run_number }}
-  #         docker build  --secret type=env,id=gh_user,env=FOODCORE_SHARED_REPO_USERNAME --secret type=env,id=gh_token,env=FOODCORE_SHARED_REPO_TOKEN -t $IMAGE_NAME -f docker/Dockerfile .
-  #         docker push $IMAGE_NAME
-  #       env:
-  #         FOODCORE_SHARED_REPO_USERNAME: ${{ secrets.FOODCORE_SHARED_REPO_USERNAME }}
-  #         FOODCORE_SHARED_REPO_TOKEN: ${{ secrets.FOODCORE_SHARED_REPO_TOKEN }}
+      - name: Build and Push Docker Image
+        run: |
+          IMAGE_NAME=${{ needs.infra-info.outputs.acr_login_server }}/foodcore-order:${{ github.run_number }}
+          docker build  --secret type=env,id=gh_user,env=FOODCORE_SHARED_REPO_USERNAME --secret type=env,id=gh_token,env=FOODCORE_SHARED_REPO_TOKEN -t $IMAGE_NAME -f docker/Dockerfile .
+          docker push $IMAGE_NAME
+        env:
+          FOODCORE_SHARED_REPO_USERNAME: ${{ secrets.FOODCORE_SHARED_REPO_USERNAME }}
+          FOODCORE_SHARED_REPO_TOKEN: ${{ secrets.FOODCORE_SHARED_REPO_TOKEN }}
 
-  #     - name: Build and Push Package Helm Chart
-  #       run: |
-  #         CHART_VERSION="0.1.${{ github.run_number }}"
-  #         sed -i "s/^version:.*/version: $CHART_VERSION/" kubernetes/foodcore-order/Chart.yaml
-  #         sed -i "s/^appVersion:.*/appVersion: $CHART_VERSION/" kubernetes/foodcore-order/Chart.yaml
-  #         helm dependency update kubernetes/foodcore-order
-  #         helm package kubernetes/foodcore-order -d ./charts
-  #         ACR_NAME=${{ needs.infra-info.outputs.acr_login_server }}
-  #         helm push ./charts/foodcore-order-*.tgz oci://$ACR_NAME/helm
+      - name: Build and Push Package Helm Chart
+        run: |
+          CHART_VERSION="0.1.${{ github.run_number }}"
+          sed -i "s/^version:.*/version: $CHART_VERSION/" kubernetes/foodcore-order/Chart.yaml
+          sed -i "s/^appVersion:.*/appVersion: $CHART_VERSION/" kubernetes/foodcore-order/Chart.yaml
+          helm dependency update kubernetes/foodcore-order
+          helm package kubernetes/foodcore-order -d ./charts
+          ACR_NAME=${{ needs.infra-info.outputs.acr_login_server }}
+          helm push ./charts/foodcore-order-*.tgz oci://$ACR_NAME/helm
 
-  # terraform:
-  #   runs-on: ubuntu-latest
-  #   needs: [push, infra-info]
-  #   env:
-  #     TF_VAR_docker_image_uri: "${{ needs.infra-info.outputs.acr_login_server }}/foodcore-order"
+  terraform:
+    runs-on: ubuntu-latest
+    needs: [push, infra-info]
+    env:
+      TF_VAR_docker_image_uri: "${{ needs.infra-info.outputs.acr_login_server }}/foodcore-order"
 
-  #   defaults:
-  #     run:
-  #       working-directory: terraform
+    defaults:
+      run:
+        working-directory: terraform
 
-  #   steps:
-  #     - name: Checkout repo
-  #       uses: actions/checkout@v3
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-  #     - name: Login Azure
-  #       uses: azure/login@v1
-  #       with:
-  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Login Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-  #     - name: Setup Terraform
-  #       uses: hashicorp/setup-terraform@v2
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
 
-  #     - name: Download artifacts - OpenApi File
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: openapi
-  #         path: build/openapi
+      - name: Download artifacts - OpenApi File
+        uses: actions/download-artifact@v4
+        with:
+          name: openapi
+          path: build/openapi
 
-  #     - name: Terraform Fmt
-  #       id: fmt
-  #       run: terraform fmt
+      - name: Terraform Fmt
+        id: fmt
+        run: terraform fmt
 
-  #     - name: Terraform Init
-  #       run: |
-  #         terraform init \
-  #           -backend-config="resource_group_name=${{secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME}}" \
-  #           -backend-config="storage_account_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}" \
-  #           -backend-config="container_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}" \
-  #           -backend-config="subscription_id=${{secrets.AZURE_SUBSCRIPTION_ID}}" \
-  #           -backend-config="key=${{secrets.BACKEND_AZURE_KEY}}"
+      - name: Terraform Init
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=${{secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME}}" \
+            -backend-config="storage_account_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}" \
+            -backend-config="container_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}" \
+            -backend-config="subscription_id=${{secrets.AZURE_SUBSCRIPTION_ID}}" \
+            -backend-config="key=${{secrets.BACKEND_AZURE_KEY}}"
 
-  #     - name: Terraform Validate
-  #       id: validate
-  #       run: terraform validate -no-color
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
 
-  #     - name: Terraform Plan
-  #       id: plan
-  #       run: terraform plan -out=tfplan
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -out=tfplan
 
-  #     - name: Upload Terraform Plan
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: tfplan
-  #         path: terraform/tfplan
+      - name: Upload Terraform Plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan
+          path: terraform/tfplan
