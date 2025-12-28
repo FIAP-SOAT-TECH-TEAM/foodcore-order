@@ -71,6 +71,7 @@ dependencies {
 
 	// Spring Cloud
 	implementation 'org.springframework.cloud:spring-cloud-starter-kubernetes-client'
+	implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 	implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
 
