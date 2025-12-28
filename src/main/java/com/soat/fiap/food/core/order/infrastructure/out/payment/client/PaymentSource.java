@@ -1,6 +1,5 @@
 package com.soat.fiap.food.core.order.infrastructure.out.payment.client;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.soat.fiap.food.core.order.core.interfaceadapters.dto.payment.PaymentStatusDTO;
@@ -8,21 +7,22 @@ import com.soat.fiap.food.core.order.infrastructure.common.source.PaymentDataSou
 import com.soat.fiap.food.core.order.infrastructure.out.payment.exceptions.PaymentException;
 import com.soat.fiap.food.core.order.infrastructure.out.payment.mapper.response.PaymentStatusDTOMapper;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * Implementação concreta: DataSource para comunicação com o microsserviço de
  * Pagamento
  */
-@Component @Slf4j @RequiredArgsConstructor
+@Component @Slf4j
 public class PaymentSource implements PaymentDataSource {
 
-	@Autowired
-	private PaymentClient client;
+	private final PaymentClient client;
+	private final PaymentStatusDTOMapper paymentStatusDTOMapper;
 
-	@Autowired
-	private PaymentStatusDTOMapper paymentStatusDTOMapper;
+	public PaymentSource(PaymentClient client, PaymentStatusDTOMapper paymentStatusDTOMapper) {
+		this.client = client;
+		this.paymentStatusDTOMapper = paymentStatusDTOMapper;
+	}
 
 	@Override
 	public PaymentStatusDTO getOrderStatus(Long orderId) {
