@@ -16,20 +16,20 @@ module "helm" {
   api_ingress_path                  = var.api_ingress_path
 }
 
-# module "apim" {
-#   source = "./modules/apim"
+module "apim" {
+  source = "./modules/apim"
 
-#   subscription_id                   = var.subscription_id
-#   foodcore-backend-container        = var.foodcore-backend-container
-#   foodcore-backend-infra-key        = var.foodcore-backend-infra-key
-#   foodcore-backend-auth-key         = var.foodcore-backend-auth-key
-#   foodcore-backend-resource-group   = var.foodcore-backend-resource-group
-#   foodcore-backend-storage-account  = var.foodcore-backend-storage-account
-#   apim_api_name                     = var.apim_api_name
-#   apim_api_version                  = var.apim_api_version
-#   apim_display_name                 = var.apim_display_name
-#   swagger_path                      = var.swagger_path
-#   api_ingress_path                  = local.api_ingress_path_without_slash
+  subscription_id                   = var.subscription_id
+  foodcore-backend-container        = var.foodcore-backend-container
+  foodcore-backend-infra-key        = var.foodcore-backend-infra-key
+  foodcore-backend-auth-key         = var.foodcore-backend-auth-key
+  foodcore-backend-resource-group   = var.foodcore-backend-resource-group
+  foodcore-backend-storage-account  = var.foodcore-backend-storage-account
+  apim_api_name                     = var.apim_api_name
+  apim_api_version                  = var.apim_api_version
+  apim_display_name                 = var.apim_display_name
+  swagger_path                      = var.swagger_path
+  api_ingress_path                  = local.api_ingress_path_without_slash
 
-#   depends_on = [module.helm]
-# }
+  depends_on = [module.helm]
+}
