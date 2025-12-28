@@ -9,19 +9,22 @@ import com.soat.fiap.food.core.order.infrastructure.common.source.CatalogDataSou
 import com.soat.fiap.food.core.order.infrastructure.out.catalog.product.exceptions.ProductException;
 import com.soat.fiap.food.core.order.infrastructure.out.catalog.product.mapper.response.ProductDTOMapper;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * Implementação concreta: DataSource para comunicação com o microsserviço de
  * Catalog (Product)
  */
-@Component @Slf4j @RequiredArgsConstructor
+@Component @Slf4j
 public class CatalogSource implements CatalogDataSource {
 
-	private ProductClient client;
+	private final ProductClient client;
+	private final ProductDTOMapper productDTOMapper;
 
-	private ProductDTOMapper productDTOMapper;
+	public CatalogSource(ProductClient client, ProductDTOMapper productDTOMapper) {
+		this.client = client;
+		this.productDTOMapper = productDTOMapper;
+	}
 
 	@Override
 	public List<ProductDTO> findByProductIds(List<Long> productIds) {
