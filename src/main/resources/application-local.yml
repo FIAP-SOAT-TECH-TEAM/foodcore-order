@@ -24,8 +24,7 @@ logging:
   level:
     root: INFO
     org.springframework: INFO
-    com.soat.fiap.food.core.api: DEBUG
-    com.soat.fiap.food.core.api.product: DEBUG
+    com.soat.fiap.food.core.order: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org.springframework.web: INFO

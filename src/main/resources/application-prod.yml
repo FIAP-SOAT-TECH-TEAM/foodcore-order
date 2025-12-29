@@ -42,6 +42,6 @@ management:
 logging:
   level:
     root: WARN
-    com.fastfood: INFO
+    com.soat.fiap.food.core.order: INFO
     org.springframework.web: WARN
     org.hibernate: WARN

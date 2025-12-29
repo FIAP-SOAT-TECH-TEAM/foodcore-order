@@ -45,7 +45,7 @@ public class SpringDocConfig {
 	public GroupedOpenApi orderApi() {
 		return GroupedOpenApi.builder()
 				.group("pedidos")
-				.packagesToScan("com.soat.fiap.food.core.api.order")
+				.packagesToScan("com.soat.fiap.food.core.order")
 				.pathsToMatch("/**")
 				.build();
 	}
