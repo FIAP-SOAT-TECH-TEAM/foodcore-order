@@ -35,3 +35,10 @@ spec:
             name: {{ printf "%s-service" (include "api.fullname" .) }}
             port:
               number: {{ .Values.api.ports.port }}
+      - path: {{ .Values.api.ingress.path }}
+          pathType: {{ .Values.api.ingress.pathType }}
+          backend:
+            service:
+              name: {{ printf "%s-service" (include "api.fullname" .) }}
+              port:
+                number: {{ .Values.api.ports.port }}
