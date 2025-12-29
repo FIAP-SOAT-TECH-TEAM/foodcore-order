@@ -84,6 +84,13 @@ spring:
 
 # Circuit Breaker
 resilience4j:
+
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 3s
+        cancelRunningFuture: true
+
   circuitbreaker:
     configs:
       default:
