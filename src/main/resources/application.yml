@@ -76,11 +76,18 @@ spring:
   mail:
     host: ${SPRING_MAIL_HOST:}
     port: ${SPRING_MAIL_PORT:}
+    from: ${SPRING_MAIL_FROM:}
     username: ${SPRING_MAIL_USERNAME:}
     password: ${SPRING_MAIL_PASSWD:}
     properties:
-      mail.smtp.auth: ${SPRING_MAIL_AUTH_ENABLED:}
-      mail.smtp.starttls.enable: ${SPRING_MAIL_TLS_ENABLED:}
+      mail:
+        smtp:
+          auth: ${SPRING_MAIL_AUTH_ENABLED:}
+          starttls:
+            enable: ${SPRING_MAIL_TLS_ENABLED:}
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
 
 # Circuit Breaker
 resilience4j:

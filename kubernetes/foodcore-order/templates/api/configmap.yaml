@@ -14,4 +14,5 @@ data:
 
   CATALOG_MS_SERVICE_NAME: foodcore-catalog-service
   PAYMENT_MS_SERVICE_NAME: foodcore-payment-service
-  # ZIPKIN_URL: 
+
+  ZIPKIN_URL: foodcore-monitor-zipkin-service
