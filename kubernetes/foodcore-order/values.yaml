@@ -5,6 +5,8 @@ namespace:
     name: replaced
   catalog:
     name: replaced
+  monitor:
+    name: replaced
 
 ingress:
   hosts:
@@ -60,16 +62,6 @@ api:
         enabled: true
       tls:
         enabled: true
-
-storageClass:
-  name: azure-disk
-  skuName: Standard_LRS
-  kind: Managed
-  cachingMode: ReadOnly
-  reclaimPolicy: Delete
-  volumeBindingMode: WaitForFirstConsumer
-  allowVolumeExpansion: true
-  fsType: ext4
 
 secrets:
   azureKeyVault:

@@ -1,7 +1,6 @@
 🍔 Food Core Order - Helm Chart Deployment
 🎯 Implementado com Clean Architecture e DDD
 
-
 🚀 Microsserviço de pedidos foi implantado com sucesso! 
 🌐 Consulte FQDN público do APIM
 

@@ -1,4 +1,4 @@
-resource "helm_release" "foodcoreapi" {
+resource "helm_release" "foodcore_order" {
   name            = var.release_name
   repository      = var.repository_url
   chart           = var.chart_name
@@ -12,6 +12,11 @@ resource "helm_release" "foodcoreapi" {
   set {
     name  = "namespace.api.name"
     value = data.terraform_remote_state.infra.outputs.aks_order_namespace_name
+  }
+
+  set {
+    name  = "namespace.monitor.name"
+    value = data.terraform_remote_state.infra.outputs.aks_monitor_namespace_name
   }
 
   set {
