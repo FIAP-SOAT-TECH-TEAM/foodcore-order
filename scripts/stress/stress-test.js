@@ -1,3 +1,4 @@
+// ESTE SCRIPT FOI HERDADO DAS FASES PASSADAS DO PROJETO E PODE SER MODIFICADO CONFORME NECESSÁRIO
 /* 
 - Aguarde todos os PODs inicializarem antes de executar o teste de stress. Não somente o POD da API, mas também seus colaterais:
   - O EFK pode demorar um pouco para iniciar;
