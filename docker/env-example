@@ -1,0 +1,6 @@
+# Banco de Dados PostgreSQL
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=order
+PGDATA=/var/lib/postgresql/data/pgdata
+DB_PORT=5432
