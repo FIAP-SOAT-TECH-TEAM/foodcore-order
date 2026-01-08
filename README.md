@@ -27,7 +27,7 @@ Microsserviço responsável pelo gerenciamento de pedidos do sistema FoodCore, i
 
 > 📽️ Vídeo de demonstração da arquitetura: [https://www.youtube.com/watch?v=XgUpOKJjqak](https://www.youtube.com/watch?v=XgUpOKJjqak)<br>
 
----
+--- 
 
 <h2 id="visao-geral">📋 Visão Geral</h2>
 
