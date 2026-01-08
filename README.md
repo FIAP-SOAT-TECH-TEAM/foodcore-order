@@ -1,7 +1,7 @@
 # 🛒 FoodCore Order
 
 <div align="center">
-  
+
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=FIAP-SOAT-TECH-TEAM_foodcore-order&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=FIAP-SOAT-TECH-TEAM_foodcore-order)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=FIAP-SOAT-TECH-TEAM_foodcore-order&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=FIAP-SOAT-TECH-TEAM_foodcore-order)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=FIAP-SOAT-TECH-TEAM_foodcore-order&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=FIAP-SOAT-TECH-TEAM_foodcore-order)
@@ -23,11 +23,11 @@ Microsserviço responsável pelo gerenciamento de pedidos do sistema FoodCore, i
   <a href="#instalacao-e-uso">Instalação e Uso</a> •
   <a href="#apis">APIs</a> •
   <a href="#contribuicao">Contribuição</a>
-</div><br> 
+</div><br>
 
 > 📽️ Vídeo de demonstração da arquitetura: [https://www.youtube.com/watch?v=XgUpOKJjqak](https://www.youtube.com/watch?v=XgUpOKJjqak)<br>
 
---- 
+---
 
 <h2 id="visao-geral">📋 Visão Geral</h2>
 
@@ -159,6 +159,7 @@ O **FoodCore Order** segue os princípios de **Clean Architecture** e **Domain-D
 <summary>Expandir para mais detalhes</summary>
 
 ### Backend
+
 - **Java 21**: Linguagem principal
 - **Spring Boot 3.4**: Framework base
 - **Spring Data JPA**: Persistência
@@ -167,19 +168,23 @@ O **FoodCore Order** segue os princípios de **Clean Architecture** e **Domain-D
 - **Retrofit**: Cliente HTTP
 
 ### Banco de Dados
+
 - **PostgreSQL**: Banco relacional
 - **Liquibase**: Migrations
 
 ### Mensageria
+
 - **Azure Service Bus**: Comunicação assíncrona entre microsserviços
 
 ### Infraestrutura
+
 - **Docker / Docker Compose**: Containerização
 - **Kubernetes (AKS)**: Orquestração em produção
 - **Helm**: Gerenciamento de pacotes K8s
 - **Terraform**: IaC
 
 ### Qualidade
+
 - **SonarCloud**: Análise estática
 - **JUnit 5 + Mockito**: Testes unitários
 - **Cucumber**: Testes BDD
@@ -192,7 +197,6 @@ O **FoodCore Order** segue os princípios de **Clean Architecture** e **Domain-D
 
 <details>
 <summary>Expandir para mais detalhes</summary>
-
 
 | Débito | Descrição | Impacto |
 |--------|-----------|---------|
@@ -215,6 +219,8 @@ O **FoodCore Order** segue os princípios de **Clean Architecture** e **Domain-D
 > Durante o deploy dos microsserviços, Pods podem ficar com status **Pending** e o seguinte erro pode aparecer:
 >
 > <img src=".github/images/error.jpeg" alt="Error" />
+>
+> <img src=".github/images/erroDeploy.jpeg" alt="Error" />
 >
 > **Causa**: O cluster atingiu o limite máximo de VMs permitido pela quota e não há recursos computacionais (CPU/memória) disponíveis nos nós existentes.
 >
@@ -244,6 +250,7 @@ O **FoodCore Order** segue os princípios de **Clean Architecture** e **Domain-D
 <h2 id="instalacao-e-uso">🚀 Instalação e Uso</h2>
 
 ### Pré-requisitos
+
 - Java 21
 - Docker e Docker Compose
 - Gradle
@@ -285,6 +292,7 @@ cp env-example .env
 | `POST` | `/api/orders/{id}/chargeback` | Estornar pedido |
 
 ### Documentação
+
 - **Swagger UI**: `http://localhost:8080/swagger-ui.html`
 - **OpenAPI**: `http://localhost:8080/v3/api-docs`
 
