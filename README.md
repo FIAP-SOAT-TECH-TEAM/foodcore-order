@@ -50,6 +50,27 @@ Este microsserviço faz parte de uma arquitetura de microsserviços que segue os
 - **SAGA Coreografada**: Orquestração distribuída baseada em eventos
 
 ---
+<h2 id="apis">📡 APIs</h2>
+
+### Endpoints Principais
+
+| Método | Endpoint | Ingress Port | Descrição |
+|--------|----------|--------------|-----------|
+| `POST` | `/order` | 443 (Https) | Criar novo pedido |
+| `GET` | `/order/{id}` | 443 (Https) | Buscar pedido por ID |
+| `PATCH` | `/order/{id}/status` | 443 (Https) | Atualizar status do pedido |
+| `POST` | `/order/{id}/chargeback` | 443 (Https) | Estornar pedido |
+
+> ⚠️ A URL Base pode ser obtida via output terraform `apim_gateway_url` (foodcore-infra).
+
+### Documentação
+
+- **Swagger UI**: `http://localhost:8080/swagger-ui.html`
+- **OpenAPI**: `http://localhost:8080/v3/api-docs`
+
+> ⚠️ A porta pode mudar em decorrência da variável de ambiente: `SERVER_PORT`.
+
+---
 
 <h2 id="arquitetura">🧱 Arquitetura</h2>
 
@@ -152,7 +173,7 @@ A comunicação HTTP entre microsserviços utiliza:
 |---------|-----------|
 | **Deployment** | Pods com health probes, limites de recursos, variáveis de ambiente |
 | **Service** | Exposição interna no cluster |
-| **Ingress** | Roteamento via NGINX: `/api/orders/*` |
+| **Ingress** | Roteamento via Azure Application Gateway (LB Layer 7) |
 | **ConfigMap** | Configurações não sensíveis |
 | **Secrets** | Credenciais criptografadas (Database, Service Bus) |
 | **HPA** | Escalabilidade automática baseada em CPU/memória |
@@ -241,13 +262,10 @@ A comunicação HTTP entre microsserviços utiliza:
 | Débito | Descrição | Impacto |
 |--------|-----------|---------|
 | **Separar Notificação** | Extrair responsabilidade de notificação para Azure Function com trigger de Azure Service Bus | Reduz acoplamento e melhora escalabilidade |
-| **Transactional Outbox Pattern** | Implementar padrão para evitar escrita duplicada na SAGA coreografada | Garante consistência eventual |
+| **Transactional Outbox Pattern** | Implementar padrão para evitar escrita duplicada na SAGA coreografada | Garate síncronia entre atualização do DB e publicação de eventos |
 | **Workload Identity** | Usar Workload Identity para Pods acessarem recursos Azure (atual: Azure Key Vault Provider) | Melhora segurança e gestão de credenciais |
-| **OpenTelemetry** | Migrar de Zipkin/Micrometer para OpenTelemetry | Padronização de observabilidade |
+| **OpenTelemetry** | Migrar de Micrometer para OpenTelemetry | Padronização de observabilidade |
 | **WAF Layer** | Implementar camada WAF antes do API Gateway para proteção OWASP TOP 10 | Segurança adicional |
-
-> ℹ️ A **consistência eventual** é garantida pelo **padrão SAGA Coreografada**.
-> O **Transactional Outbox** resolve apenas o problema de **dupla escrita**.
 
 ---
 
@@ -275,6 +293,32 @@ A comunicação HTTP entre microsserviços utiliza:
 
 ---
 
+<h2 id="dicionario">📖 Dicionário de Linguagem Ubíqua</h2>
+
+<details>
+<summary>Expandir para mais detalhes</summary>
+
+| Termo | Descrição |
+|-------|-----------|
+| **Admin** | Usuário com privilégios elevados para gestão do sistema |
+| **Adquirente** | Instituição financeira que processa pagamentos (Mercado Pago) |
+| **Authentication** | Validação da identidade do usuário |
+| **Authorization** | Controle de acesso baseado em roles |
+| **Catalog** | Conjunto de produtos disponíveis |
+| **Category** | Classificação de produtos (lanches, bebidas, sobremesas) |
+| **Combo** | Conjunto personalizado: lanche + acompanhamento + bebida + sobremesa |
+| **Customer** | Cliente que realiza pedidos |
+| **Guest** | Cliente não identificado |
+| **Order** | Pedido com itens selecionados |
+| **Order Item** | Produto específico dentro de um pedido |
+| **Payment** | Processamento de pagamento via Mercado Pago |
+| **Product** | Item disponível para venda |
+| **Role** | Papel do usuário (ADMIN, ATENDENTE, GUEST) |
+
+</details>
+
+---
+
 <h2 id="diagramas">📊 Diagramas</h2>
 
 <details>
@@ -292,6 +336,43 @@ A comunicação HTTP entre microsserviços utiliza:
 
 ---
 
+<h2 id="deploy">⚙️ Fluxo de Deploy</h2>
+
+<details>
+<summary>Expandir para mais detalhes</summary>
+
+### Pipeline
+
+1. **Pull Request**
+   - Preencher template de pull request adequadamente
+
+2. **Revisão e Aprovação**
+   - Mínimo 1 aprovação de CODEOWNER
+
+3. **Merge para Main**
+
+### Proteções
+
+- Branch `main` protegida
+- Nenhum push direto permitido
+- Todos os checks devem passar
+
+### Ordem de Provisionamento
+
+```
+1. foodcore-infra        (AKS, VNET)
+2. foodcore-db           (Bancos de dados)
+3. foodcore-auth           (Azure Function Authorizer)
+4. foodcore-observability (Serviços de Observabilidade)
+5. foodcore-order            (Microsserviço de pedido)
+6. foodcore-payment            (Microsserviço de pagamento)
+7. foodcore-catalog            (Microsserviço de catálogo)
+```
+
+> ⚠️ Opcionalmente, as pipelines do repositório `foodcore-shared` podem ser executadas para publicação de um novo package. Atualizar os microsserviços para utilazarem a nova versão do pacote.
+
+</details>
+
 <h2 id="instalacao-e-uso">🚀 Instalação e Uso</h2>
 
 ### Pré-requisitos
@@ -307,54 +388,34 @@ A comunicação HTTP entre microsserviços utiliza:
 git clone https://github.com/FIAP-SOAT-TECH-TEAM/foodcore-order.git
 cd foodcore-order
 
-# Subir dependências (PostgreSQL, etc.)
-docker-compose -f docker/docker-compose.yml up -d
+# Configurar variáveis de ambiente (Docker)
+cp docker/env-example docker/.env
 
-# Configurar variáveis de ambiente
+# Subir dependências
+./food start:infra
+
+# Configurar variáveis de ambiente (Aplicação)
 cp env-example .env
 
 # Executar aplicação
 ./gradlew bootRun --args='--spring.profiles.active=local'
-
-# Executar testes
-./gradlew test
-
-# Executar testes BDD
-./gradlew cucumber
 ```
 
----
-
-<h2 id="apis">📡 APIs</h2>
-
-### Endpoints Principais
-
-| Método | Endpoint | Ingress Port | Descrição |
-|--------|----------|-----------|
-| `POST` | `/order` | 443 (Https) | Criar novo pedido |
-| `GET` | `/order/{id}` | 443 (Https) | Buscar pedido por ID |
-| `PATCH` | `/order/{id}/status` | 443 (Https) | Atualizar status do pedido |
-| `POST` | `/order/{id}/chargeback` | 443 (Https) | Estornar pedido |
-
-> ⚠️ A URL Base pode ser obtida via output terraform `apim_gateway_url` (foodcore-infra).
-
-### Documentação
-
-- **Swagger UI**: `http://localhost:8080/swagger-ui.html`
-- **OpenAPI**: `http://localhost:8080/v3/api-docs`
-
-> ⚠️ A porta pode mudar em decorrência da variável de ambiente: `SERVER_PORT`.
+> ⚠️ Use o utilitário de linha de comandos `dos2unix` para corrigir problemas de CLRF e LF.
+> Ajuste os arquivos .env conforme necessário.
 
 ---
 
 <h2 id="contribuicao">🤝 Contribuição</h2>
 
-### Fluxo de Deploy
+### Fluxo de Contribuição
 
-1. Abra um Pull Request com suas alterações
-2. Pipeline CI executa testes e análise de código
-3. Após aprovação de CODEOWNER, merge para `main`
-4. Pipeline CD faz deploy automático no AKS
+1. Crie uma branch a partir de `main`
+2. Implemente suas alterações
+3. Execute os testes unitários: `./gradlew test`
+4. Execute os testes de integração (BDD): `./gradlew cucumber`
+5. Abra um Pull Request
+6. Aguarde aprovação de um CODEOWNER
 
 ### Licença
 
@@ -364,5 +425,5 @@ Este projeto está licenciado sob a [MIT License](LICENSE).
 
 <div align="center">
   <strong>FIAP - Pós-graduação em Arquitetura de Software</strong><br>
-  Tech Challenge
+  Tech Challenge 4
 </div>
