@@ -60,11 +60,15 @@ O **FoodCore Order** segue os princípios de **Clean Architecture** e **Domain-D
 
 ### 🎯 Princípios Adotados
 
+- **DDD**: Bounded context de pedido isolado
+- **Clean Architecture**: Domínio independente de frameworks
 - **Separação de responsabilidades**: Cada camada tem responsabilidade bem definida
 - **Independência de frameworks**: Domínio não depende de Spring ou outras bibliotecas
 - **Testabilidade**: Lógica de negócio isolada facilita testes unitários
-- **Inversão de dependências**: Detalhes técnicos dependem do domínio
+- **Inversão de Dependência**: Classes utilizam abstrações, nunca implementações concretas diretamente
+- **Injeção de Dependência**: Classes recebem via construtor os objetos que necessitam utilizar
 - **SAGA Coreografada**: Comunicação assíncrona via eventos
+- **Comunicação Síncrona Resiliente**: Comunicações síncronas com outros microsserviços utilizam padrões de resiliência como Circuit Beaker e Service Discovery
 
 ---
 
@@ -325,17 +329,21 @@ cp env-example .env
 
 ### Endpoints Principais
 
-| Método | Endpoint | Descrição |
+| Método | Endpoint | Ingress Port | Descrição |
 |--------|----------|-----------|
-| `POST` | `/api/orders` | Criar novo pedido |
-| `GET` | `/api/orders/{id}` | Buscar pedido por ID |
-| `PATCH` | `/api/orders/{id}/status` | Atualizar status do pedido |
-| `POST` | `/api/orders/{id}/chargeback` | Estornar pedido |
+| `POST` | `/order` | 443 (Https) | Criar novo pedido |
+| `GET` | `/order/{id}` | 443 (Https) | Buscar pedido por ID |
+| `PATCH` | `/order/{id}/status` | 443 (Https) | Atualizar status do pedido |
+| `POST` | `/order/{id}/chargeback` | 443 (Https) | Estornar pedido |
+
+> ⚠️ A URL Base pode ser obtida via output terraform `apim_gateway_url` (foodcore-infra).
 
 ### Documentação
 
 - **Swagger UI**: `http://localhost:8080/swagger-ui.html`
 - **OpenAPI**: `http://localhost:8080/v3/api-docs`
+
+> ⚠️ A porta pode mudar em decorrência da variável de ambiente: `SERVER_PORT`.
 
 ---
 
