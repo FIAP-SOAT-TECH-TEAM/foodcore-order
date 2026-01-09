@@ -37,9 +37,9 @@ O **FoodCore Order** é o microsserviço central do sistema, responsável por to
 - **Acompanhamento de status**: Gerencia estados (Recebido → Em Preparação → Pronto → Finalizado)
 - **Comunicação assíncrona**: Publica eventos no Azure Service Bus para outros microsserviços
 - **Notificação de clientes**: Envia atualizações sobre status do pedido
-- **Integração síncrona**: Comunica-se com o microsserviço de catálogo via HTTP
+- **Comunicação síncrona**: Integra-se com outros microsserviços via HTTP utilizando Service Discovery
 
-Este microsserviço faz parte de uma arquitetura de microsserviços que segue os princípios de Clean Architecture e Domain-Driven Design.
+Este microsserviço faz parte de uma arquitetura de microsserviços que segue os princípios de Clean Architecture e Domain-Driven Design (DDD).
 
 ### Principais Recursos
 
@@ -47,7 +47,7 @@ Este microsserviço faz parte de uma arquitetura de microsserviços que segue os
 - **Gerenciamento de Status**: Workflow completo de status do pedido
 - **Eventos de Domínio**: Publicação de eventos de mudança de status
 - **Chargeback**: Estorno de pedidos cancelados
-- **Comunicação Assíncrona**: Integração com Azure Service Bus
+- **SAGA Coreografada**: Orquestração distribuída baseada em eventos
 
 ---
 
@@ -105,6 +105,25 @@ O **FoodCore Order** segue os princípios de **Clean Architecture** e **Domain-D
 
 ---
 
+### 🔗 Comunicação Síncrona (Service Discovery)
+
+A comunicação HTTP entre microsserviços utiliza:
+
+- **OpenFeign**
+- **Spring Cloud Kubernetes Client** para descoberta de serviços via API Server do AKS
+- **Spring Cloud LoadBalancer** para client-side load balancing
+- **RBAC Kubernetes** para permitir acesso do Pod ao API Server
+
+---
+
+### 🛡️ Resiliência
+
+- **Circuit Breaker** com **Resilience4j**
+- Integração nativa com OpenFeign
+- Proteção contra falhas em cascata
+
+---
+
 ### 🏗️ Microsserviços do Ecossistema
 
 | Microsserviço | Responsabilidade | Repositório |
@@ -134,6 +153,12 @@ O **FoodCore Order** segue os princípios de **Clean Architecture** e **Domain-D
 | **Secrets** | Credenciais criptografadas (Database, Service Bus) |
 | **HPA** | Escalabilidade automática baseada em CPU/memória |
 
+- O **Application Gateway** recebe tráfego em um **Frontend IP privado**
+- Roteamento direto para os IPs dos Pods (**Azure CNI + Overlay**)
+- Path exposto: `/order`
+
+> ⚠️ Após o deploy (CD), aguarde cerca de **5 minutos** para que o **AGIC** finalize a configuração do Application Gateway.
+
 ### Integrações
 
 | Serviço | Tipo | Descrição |
@@ -141,6 +166,16 @@ O **FoodCore Order** segue os princípios de **Clean Architecture** e **Domain-D
 | **Azure Service Bus** | Assíncrona | Publicação/consumo de eventos |
 | **PostgreSQL** | Síncrona | Persistência de dados |
 | **FoodCore Catalog** | HTTP | Validação de produtos |
+
+### 🔐 Azure Key Vault Provider (CSI)
+
+- Sincroniza secrets do Azure Key Vault com Secrets do Kubernetes
+- Monta volumes CSI com `tmpfs` dentro dos Pods
+- Utiliza o CRD **SecretProviderClass**
+
+> ⚠️ Caso o valor de uma secret seja alterado no Key Vault, é necessário **reiniciar os Pods**, pois variáveis de ambiente são injetadas apenas na inicialização.
+>
+> Referência: <https://learn.microsoft.com/en-us/azure/aks/csi-secrets-store-configuration-options>
 
 ### Observabilidade
 
@@ -165,7 +200,8 @@ O **FoodCore Order** segue os princípios de **Clean Architecture** e **Domain-D
 - **Spring Data JPA**: Persistência
 - **MapStruct**: Mapeamento DTO ↔ Entidade
 - **Lombok**: Redução de boilerplate
-- **Retrofit**: Cliente HTTP
+- **OpenFeign**: Cliente HTTP
+- **Resilience4j**: Resiliência a erros
 
 ### Banco de Dados
 
@@ -187,7 +223,7 @@ O **FoodCore Order** segue os princípios de **Clean Architecture** e **Domain-D
 
 - **SonarCloud**: Análise estática
 - **JUnit 5 + Mockito**: Testes unitários
-- **Cucumber**: Testes BDD
+- **Cucumber + Testcontainers**: Testes BDD de Integração
 
 </details>
 
@@ -205,6 +241,11 @@ O **FoodCore Order** segue os princípios de **Clean Architecture** e **Domain-D
 | **Workload Identity** | Usar Workload Identity para Pods acessarem recursos Azure (atual: Azure Key Vault Provider) | Melhora segurança e gestão de credenciais |
 | **OpenTelemetry** | Migrar de Zipkin/Micrometer para OpenTelemetry | Padronização de observabilidade |
 | **WAF Layer** | Implementar camada WAF antes do API Gateway para proteção OWASP TOP 10 | Segurança adicional |
+
+> ℹ️ A **consistência eventual** é garantida pelo **padrão SAGA Coreografada**.
+> O **Transactional Outbox** resolve apenas o problema de **dupla escrita**.
+
+---
 
 <h2 id="limitacoes-quota">Limitações de Quota (Azure for Students)</h2>
 
