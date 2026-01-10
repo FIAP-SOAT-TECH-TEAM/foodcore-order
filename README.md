@@ -312,6 +312,8 @@ A comunicação HTTP entre microsserviços utiliza:
 
 <h2 id="diagramas-dominio">📊 Diagramas de Domínio</h2>
 
+> ℹ️ Link do Event Strorming no Miro: https://miro.com/app/board/uXjVIAFD_zg=/
+
 <details>
 <summary>Expandir para mais detalhes</summary>
 
